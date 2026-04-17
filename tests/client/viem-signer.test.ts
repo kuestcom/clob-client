@@ -46,9 +46,9 @@ describe("ClobClient viem signer support", () => {
             passphrase: "p",
         });
         expect(client.lastHeaders).to.deep.include({
-            POLY_ADDRESS: signerAddress,
-            POLY_SIGNATURE: "0xdeadbeef",
-            POLY_NONCE: "0",
+            KUEST_ADDRESS: signerAddress,
+            KUEST_SIGNATURE: "0xdeadbeef",
+            KUEST_NONCE: "0",
         });
     });
 
@@ -71,9 +71,9 @@ describe("ClobClient viem signer support", () => {
 
         expect(response).to.deep.equal({ apiKeys: [] });
         expect(client.lastHeaders).to.deep.include({
-            POLY_ADDRESS: signerAddress,
-            POLY_API_KEY: creds.key,
-            POLY_PASSPHRASE: creds.passphrase,
+            KUEST_ADDRESS: signerAddress,
+            KUEST_API_KEY: creds.key,
+            KUEST_PASSPHRASE: creds.passphrase,
         });
     });
 });

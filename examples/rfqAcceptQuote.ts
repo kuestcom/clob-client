@@ -23,9 +23,9 @@ async function main() {
     // For EOA signature type
     const clobClient = new ClobClient(host, chainId, wallet, creds);
 
-    // For Polymarket Gnosis safe signature type
+    // For Kuest Gnosis safe signature type
     // const funderAddress = "0x3D01803E19Db10D0b231feacc393ffbf5Aa20B32";
-    // const clobClient = new ClobClient(host, chainId, wallet, creds, SignatureType.POLY_GNOSIS_SAFE, funderAddress);
+    // const clobClient = new ClobClient(host, chainId, wallet, creds, SignatureType.KUEST_GNOSIS_SAFE, funderAddress);
 
     console.log("Accepting quote...");
     // accept the quote

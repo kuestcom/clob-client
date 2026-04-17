@@ -25,8 +25,8 @@ async function main() {
     // Get all open orders for the address
     const response1 = await axios.get(`${host}${GET_OPEN_ORDERS}`, {
         headers: {
-            "POLY_READONLY_API_KEY": readonlyApiKey,
-            "POLY_ADDRESS": address,
+            "KUEST_READONLY_API_KEY": readonlyApiKey,
+            "KUEST_ADDRESS": address,
             "Content-Type": "application/json",
         },
         params: {

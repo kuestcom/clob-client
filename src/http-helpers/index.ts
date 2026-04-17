@@ -24,7 +24,7 @@ const overloadHeaders = (method: Method, headers?: SimpleHeaders) => {
     }
 
     if (headers) {
-        headers["User-Agent"] = "@polymarket/clob-client";
+        headers["User-Agent"] = "@kuestcom/clob-client";
         headers.Accept = "*/*";
         headers.Connection = "keep-alive";
         headers["Content-Type"] = "application/json";

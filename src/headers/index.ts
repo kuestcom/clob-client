@@ -1,13 +1,13 @@
-import type { BuilderHeaderPayload } from "@polymarket/builder-signing-sdk";
+import type { BuilderHeaderPayload } from "@kuestcom/builder-signing-sdk";
 import type { ClobSigner } from "../signer.ts";
 import { getSignerAddress } from "../signer.ts";
-import { buildClobEip712Signature, buildPolyHmacSignature } from "../signing/index.ts";
+import { buildClobEip712Signature, buildKuestHmacSignature } from "../signing/index.ts";
 import type {
     ApiKeyCreds,
     Chain,
-    L1PolyHeader,
+    L1KuestHeader,
     L2HeaderArgs,
-    L2PolyHeader,
+    L2KuestHeader,
     L2WithBuilderHeader,
 } from "../types.ts";
 
@@ -16,7 +16,7 @@ export const createL1Headers = async (
     chainId: Chain,
     nonce?: number,
     timestamp?: number,
-): Promise<L1PolyHeader> => {
+): Promise<L1KuestHeader> => {
     let ts = Math.floor(Date.now() / 1000);
     if (timestamp !== undefined) {
         ts = timestamp;
@@ -30,10 +30,10 @@ export const createL1Headers = async (
     const address = await getSignerAddress(signer);
 
     const headers = {
-        POLY_ADDRESS: address,
-        POLY_SIGNATURE: sig,
-        POLY_TIMESTAMP: `${ts}`,
-        POLY_NONCE: `${n}`,
+        KUEST_ADDRESS: address,
+        KUEST_SIGNATURE: sig,
+        KUEST_TIMESTAMP: `${ts}`,
+        KUEST_NONCE: `${n}`,
     };
     return headers;
 };
@@ -43,14 +43,14 @@ export const createL2Headers = async (
     creds: ApiKeyCreds,
     l2HeaderArgs: L2HeaderArgs,
     timestamp?: number,
-): Promise<L2PolyHeader> => {
+): Promise<L2KuestHeader> => {
     let ts = Math.floor(Date.now() / 1000);
     if (timestamp !== undefined) {
         ts = timestamp;
     }
     const address = await getSignerAddress(signer);
 
-    const sig = await buildPolyHmacSignature(
+    const sig = await buildKuestHmacSignature(
         creds.secret,
         ts,
         l2HeaderArgs.method,
@@ -59,18 +59,18 @@ export const createL2Headers = async (
     );
 
     const headers = {
-        POLY_ADDRESS: address,
-        POLY_SIGNATURE: sig,
-        POLY_TIMESTAMP: `${ts}`,
-        POLY_API_KEY: creds.key,
-        POLY_PASSPHRASE: creds.passphrase,
+        KUEST_ADDRESS: address,
+        KUEST_SIGNATURE: sig,
+        KUEST_TIMESTAMP: `${ts}`,
+        KUEST_API_KEY: creds.key,
+        KUEST_PASSPHRASE: creds.passphrase,
     };
 
     return headers;
 };
 
 export const injectBuilderHeaders = (
-    l2Header: L2PolyHeader,
+    l2Header: L2KuestHeader,
     builderHeaders: BuilderHeaderPayload,
 ): L2WithBuilderHeader =>
     ({

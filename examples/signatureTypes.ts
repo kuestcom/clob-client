@@ -20,25 +20,25 @@ async function main() {
     // Client used with an EOA: Signature type 0
     const clobClient = new ClobClient(host, chainId, wallet, creds);
 
-    // Client used with a Polymarket Proxy Wallet: Signature type 1
+    // Client used with a Kuest Proxy Wallet: Signature type 1
     const proxyWalletAddress = "0x...";
     const polyProxyClient = new ClobClient(
         host,
         chainId,
         wallet,
         creds,
-        SignatureType.POLY_PROXY,
+        SignatureType.KUEST_PROXY,
         proxyWalletAddress,
     );
 
-    // Client used with a Polymarket Gnosis safe: Signature Type 2
+    // Client used with a Kuest Gnosis safe: Signature Type 2
     const gnosisSafeAddress = "0x...";
     const polyGnosisSafeClient = new ClobClient(
         host,
         chainId,
         wallet,
         creds,
-        SignatureType.POLY_GNOSIS_SAFE,
+        SignatureType.KUEST_GNOSIS_SAFE,
         gnosisSafeAddress,
     );
 

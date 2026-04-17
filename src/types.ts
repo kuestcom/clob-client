@@ -25,28 +25,28 @@ export interface L2HeaderArgs {
 export type SimpleHeaders = Record<string, string | number | boolean>;
 
 // EIP712 sig verification
-export interface L1PolyHeader extends SimpleHeaders {
-    POLY_ADDRESS: string;
-    POLY_SIGNATURE: string;
-    POLY_TIMESTAMP: string;
-    POLY_NONCE: string;
+export interface L1KuestHeader extends SimpleHeaders {
+    KUEST_ADDRESS: string;
+    KUEST_SIGNATURE: string;
+    KUEST_TIMESTAMP: string;
+    KUEST_NONCE: string;
 }
 
 // API key verification
-export interface L2PolyHeader extends SimpleHeaders {
-    POLY_ADDRESS: string;
-    POLY_SIGNATURE: string;
-    POLY_TIMESTAMP: string;
-    POLY_API_KEY: string;
-    POLY_PASSPHRASE: string;
+export interface L2KuestHeader extends SimpleHeaders {
+    KUEST_ADDRESS: string;
+    KUEST_SIGNATURE: string;
+    KUEST_TIMESTAMP: string;
+    KUEST_API_KEY: string;
+    KUEST_PASSPHRASE: string;
 }
 
 // Builder API key verification
-export interface L2WithBuilderHeader extends L2PolyHeader {
-    POLY_BUILDER_API_KEY: string;
-    POLY_BUILDER_TIMESTAMP: string;
-    POLY_BUILDER_PASSPHRASE: string;
-    POLY_BUILDER_SIGNATURE: string;
+export interface L2WithBuilderHeader extends L2KuestHeader {
+    KUEST_BUILDER_API_KEY: string;
+    KUEST_BUILDER_TIMESTAMP: string;
+    KUEST_BUILDER_PASSPHRASE: string;
+    KUEST_BUILDER_SIGNATURE: string;
 }
 
 export enum Side {

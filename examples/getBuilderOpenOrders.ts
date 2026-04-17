@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { config as dotenvConfig } from "dotenv";
 import { resolve } from "path";
 import { type ApiKeyCreds, Chain, ClobClient } from "../src/index.ts";
-import { type BuilderApiKeyCreds, BuilderConfig } from "@polymarket/builder-signing-sdk";
+import { type BuilderApiKeyCreds, BuilderConfig } from "@kuestcom/builder-signing-sdk";
 
 dotenvConfig({ path: resolve(import.meta.dirname, "../.env") });
 

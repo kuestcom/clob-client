@@ -1,5 +1,5 @@
 // Contract constants.
-export const PROTOCOL_NAME = "Polymarket CTF Exchange";
+export const PROTOCOL_NAME = "CTF Exchange";
 export const PROTOCOL_VERSION = "1";
 export const ZX = "0x";
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";

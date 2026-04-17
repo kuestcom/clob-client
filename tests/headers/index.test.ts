@@ -26,11 +26,11 @@ describe("headers", () => {
             expect(l1Headers).not.null;
             expect(l1Headers).not.undefined;
 
-            expect(l1Headers.POLY_ADDRESS).equal(wallet.address);
-            expect(l1Headers.POLY_SIGNATURE).not.empty;
-            expect(l1Headers.POLY_TIMESTAMP).not.empty;
-            expect(parseInt(l1Headers.POLY_TIMESTAMP) <= Math.floor(Date.now() / 1000)).true;
-            expect(l1Headers.POLY_NONCE).equal("0");
+            expect(l1Headers.KUEST_ADDRESS).equal(wallet.address);
+            expect(l1Headers.KUEST_SIGNATURE).not.empty;
+            expect(l1Headers.KUEST_TIMESTAMP).not.empty;
+            expect(parseInt(l1Headers.KUEST_TIMESTAMP) <= Math.floor(Date.now() / 1000)).true;
+            expect(l1Headers.KUEST_NONCE).equal("0");
         });
 
         it("nonce", async () => {
@@ -38,11 +38,11 @@ describe("headers", () => {
             expect(l1Headers).not.null;
             expect(l1Headers).not.undefined;
 
-            expect(l1Headers.POLY_ADDRESS).equal(wallet.address);
-            expect(l1Headers.POLY_SIGNATURE).not.empty;
-            expect(l1Headers.POLY_TIMESTAMP).not.empty;
-            expect(parseInt(l1Headers.POLY_TIMESTAMP) <= Math.floor(Date.now() / 1000)).true;
-            expect(l1Headers.POLY_NONCE).equal("1012");
+            expect(l1Headers.KUEST_ADDRESS).equal(wallet.address);
+            expect(l1Headers.KUEST_SIGNATURE).not.empty;
+            expect(l1Headers.KUEST_TIMESTAMP).not.empty;
+            expect(parseInt(l1Headers.KUEST_TIMESTAMP) <= Math.floor(Date.now() / 1000)).true;
+            expect(l1Headers.KUEST_NONCE).equal("1012");
         });
 
         it("wallet client signer", async () => {
@@ -53,10 +53,10 @@ describe("headers", () => {
             } as unknown as WalletClient;
 
             const l1Headers = await createL1Headers(walletClientMock, chainId, 3, 1700000000);
-            expect(l1Headers.POLY_ADDRESS).equal(accountAddress);
-            expect(l1Headers.POLY_SIGNATURE).equal("0xdeadbeef");
-            expect(l1Headers.POLY_TIMESTAMP).equal("1700000000");
-            expect(l1Headers.POLY_NONCE).equal("3");
+            expect(l1Headers.KUEST_ADDRESS).equal(accountAddress);
+            expect(l1Headers.KUEST_SIGNATURE).equal("0xdeadbeef");
+            expect(l1Headers.KUEST_TIMESTAMP).equal("1700000000");
+            expect(l1Headers.KUEST_NONCE).equal("3");
         });
     });
 
@@ -69,12 +69,12 @@ describe("headers", () => {
             expect(l2Headers).not.null;
             expect(l2Headers).not.undefined;
 
-            expect(l2Headers.POLY_ADDRESS).equal(wallet.address);
-            expect(l2Headers.POLY_SIGNATURE).not.empty;
-            expect(l2Headers.POLY_TIMESTAMP).not.empty;
-            expect(parseInt(l2Headers.POLY_TIMESTAMP) <= Math.floor(Date.now() / 1000)).true;
-            expect(l2Headers.POLY_API_KEY).equal(creds.key);
-            expect(l2Headers.POLY_PASSPHRASE).equal(creds.passphrase);
+            expect(l2Headers.KUEST_ADDRESS).equal(wallet.address);
+            expect(l2Headers.KUEST_SIGNATURE).not.empty;
+            expect(l2Headers.KUEST_TIMESTAMP).not.empty;
+            expect(parseInt(l2Headers.KUEST_TIMESTAMP) <= Math.floor(Date.now() / 1000)).true;
+            expect(l2Headers.KUEST_API_KEY).equal(creds.key);
+            expect(l2Headers.KUEST_PASSPHRASE).equal(creds.passphrase);
         });
 
         it("body", async () => {
@@ -86,12 +86,12 @@ describe("headers", () => {
             expect(l2Headers).not.null;
             expect(l2Headers).not.undefined;
 
-            expect(l2Headers.POLY_ADDRESS).equal(wallet.address);
-            expect(l2Headers.POLY_SIGNATURE).not.empty;
-            expect(l2Headers.POLY_TIMESTAMP).not.empty;
-            expect(parseInt(l2Headers.POLY_TIMESTAMP) <= Math.floor(Date.now() / 1000)).true;
-            expect(l2Headers.POLY_API_KEY).equal(creds.key);
-            expect(l2Headers.POLY_PASSPHRASE).equal(creds.passphrase);
+            expect(l2Headers.KUEST_ADDRESS).equal(wallet.address);
+            expect(l2Headers.KUEST_SIGNATURE).not.empty;
+            expect(l2Headers.KUEST_TIMESTAMP).not.empty;
+            expect(parseInt(l2Headers.KUEST_TIMESTAMP) <= Math.floor(Date.now() / 1000)).true;
+            expect(l2Headers.KUEST_API_KEY).equal(creds.key);
+            expect(l2Headers.KUEST_PASSPHRASE).equal(creds.passphrase);
         });
 
         it("wallet client signer with requestAddresses fallback", async () => {
@@ -106,11 +106,11 @@ describe("headers", () => {
                 requestPath: "/order",
             }, 1700000000);
 
-            expect(l2Headers.POLY_ADDRESS).equal(requestedAddress);
-            expect(l2Headers.POLY_SIGNATURE).not.empty;
-            expect(l2Headers.POLY_TIMESTAMP).equal("1700000000");
-            expect(l2Headers.POLY_API_KEY).equal(creds.key);
-            expect(l2Headers.POLY_PASSPHRASE).equal(creds.passphrase);
+            expect(l2Headers.KUEST_ADDRESS).equal(requestedAddress);
+            expect(l2Headers.KUEST_SIGNATURE).not.empty;
+            expect(l2Headers.KUEST_TIMESTAMP).equal("1700000000");
+            expect(l2Headers.KUEST_API_KEY).equal(creds.key);
+            expect(l2Headers.KUEST_PASSPHRASE).equal(creds.passphrase);
         });
     });
 });

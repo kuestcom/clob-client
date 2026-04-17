@@ -1,25 +1,25 @@
-//npm install @polymarket/clob-client
+//npm install @kuestcom/clob-client
 //npm install ethers
 //Client initialization example and dumping API Keys
 
 import { ClobClient, OrderType, Side } from "../src/index.ts";
 import { Wallet } from "@ethersproject/wallet";
 
-const host = "https://clob.polymarket.com";
-const funder = ""; //This is your Polymarket Profile Address, where you send UDSC to.
-const signer = new Wallet(""); //This is your Private Key. If using email login export from https://reveal.magic.link/polymarket otherwise export from your Web3 Application
+const host = "https://clob.kuest.com";
+const funder = ""; //This is your Kuest Profile Address, where you send UDSC to.
+const signer = new Wallet(""); //This is your Private Key. If using email login export from https://reveal.magic.link/kuest otherwise export from your Web3 Application
 
 //In general don't create a new API key, always derive or createOrDerive
-const creds = new ClobClient(host, 137, signer).createOrDeriveApiKey();
+const creds = new ClobClient(host, 80002, signer).createOrDeriveApiKey();
 
 //0: Browser Wallet(Metamask, Coinbase Wallet, etc)
 //1: Magic/Email Login
 const signatureType = 1;
 (async () => {
-    const clobClient = new ClobClient(host, 137, signer, await creds, signatureType, funder);
+    const clobClient = new ClobClient(host, 80002, signer, await creds, signatureType, funder);
     const resp2 = await clobClient.createAndPostOrder(
         {
-            tokenID: "", //Use https://docs.polymarket.com/developers/gamma-markets-api/get-markets to grab a sample token
+            tokenID: "", //Use https://docs.kuest.com/developers/gamma-markets-api/get-markets to grab a sample token
             price: 0.01,
             side: Side.BUY,
             size: 5,

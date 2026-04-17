@@ -13,7 +13,7 @@ export class OrderBuilder {
     readonly signatureType: SignatureType;
 
     // Address which holds funds to be used.
-    // Used for Polymarket proxy wallets and other smart contract wallets
+    // Used for Kuest proxy wallets and other smart contract wallets
     // If not provided, funderAddress is the signer address
     readonly funderAddress?: string;
 

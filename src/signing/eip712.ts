@@ -4,7 +4,7 @@ import type { Chain } from "../types.ts";
 import { MSG_TO_SIGN } from "./constants.ts";
 
 /**
- * Builds the canonical Polymarket CLOB EIP712 signature
+ * Builds the canonical Kuest CLOB EIP712 signature
  * @param signer
  * @param ts
  * @returns string

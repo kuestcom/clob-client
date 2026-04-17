@@ -1,8 +1,8 @@
-import { buildPolyHmacSignature } from "../../src/signing/hmac.ts";
+import { buildKuestHmacSignature } from "../../src/signing/hmac.ts";
 
 describe("hmac", () => {
-    it("buildPolyHmacSignature", async () => {
-        const signature = await buildPolyHmacSignature(
+    it("buildKuestHmacSignature", async () => {
+        const signature = await buildKuestHmacSignature(
             "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
             1000000,
             "test-sign",
@@ -15,15 +15,15 @@ describe("hmac", () => {
         expect(signature).equal("ZwAdJKvoYRlEKDkNMwd5BuwNNtg93kNaR_oU2HrfVvc=");
     });
 
-    it("buildPolyHmacSignature transforms base64url encoding to base64", async () => {
-        const base64Signature = await buildPolyHmacSignature(
+    it("buildKuestHmacSignature transforms base64url encoding to base64", async () => {
+        const base64Signature = await buildKuestHmacSignature(
             "++/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
             1000000,
             "test-sign",
             "/orders",
             '{"hash": "0x123"}',
         );
-        const base64UrlSignature = await buildPolyHmacSignature(
+        const base64UrlSignature = await buildKuestHmacSignature(
             "--_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
             1000000,
             "test-sign",
@@ -33,8 +33,8 @@ describe("hmac", () => {
         expect(base64UrlSignature).equal(base64Signature);
     });
 
-    it("buildPolyHmacSignature ignores invalid symbols in base64, for backwards compatibility with Node.js Buffer.from()", async () => {
-        const signature = await buildPolyHmacSignature(
+    it("buildKuestHmacSignature ignores invalid symbols in base64, for backwards compatibility with Node.js Buffer.from()", async () => {
+        const signature = await buildKuestHmacSignature(
             "AAAAAAAAA^^AAAAAAAA<>AAAAA||AAAAAAAAAAAAAAAAAAAAA=",
             1000000,
             "test-sign",

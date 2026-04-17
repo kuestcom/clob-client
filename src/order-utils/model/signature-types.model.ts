@@ -5,12 +5,12 @@ export enum SignatureType {
     EOA = 0,
 
     /**
-     * EIP712 signatures signed by EOAs that own Polymarket Proxy wallets
+     * EIP712 signatures signed by EOAs that own Kuest Proxy wallets
      */
-    POLY_PROXY = 1,
+    KUEST_PROXY = 1,
 
     /**
-     * EIP712 signatures signed by EOAs that own Polymarket Gnosis safes
+     * EIP712 signatures signed by EOAs that own Kuest Gnosis safes
      */
-    POLY_GNOSIS_SAFE = 2,
+    KUEST_GNOSIS_SAFE = 2,
 }

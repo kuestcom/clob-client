@@ -1,4 +1,4 @@
-import type { BuilderConfig, BuilderHeaderPayload } from "@polymarket/builder-signing-sdk";
+import type { BuilderConfig, BuilderHeaderPayload } from "@kuestcom/builder-signing-sdk";
 import { END_CURSOR, INITIAL_CURSOR } from "./constants.ts";
 import {
     ARE_ORDERS_SCORING,
@@ -100,7 +100,7 @@ import type {
     FeeRates,
     HeartbeatResponse,
     L2HeaderArgs,
-    L2PolyHeader,
+    L2KuestHeader,
     L2WithBuilderHeader,
     MarketPrice,
     MarketReward,
@@ -1568,7 +1568,7 @@ export class ClobClient {
     }
 
     private async _generateBuilderHeaders(
-        headers: L2PolyHeader,
+        headers: L2KuestHeader,
         headerArgs: L2HeaderArgs,
     ): Promise<L2WithBuilderHeader | undefined> {
         if (this.builderConfig !== undefined) {

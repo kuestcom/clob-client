@@ -28,7 +28,7 @@ describe("utilities", () => {
                     expiration: "0",
                     nonce: "1",
                     feeRateBps: "100",
-                    signatureType: SignatureType.POLY_GNOSIS_SAFE,
+                    signatureType: SignatureType.KUEST_GNOSIS_SAFE,
                     signature: "0x",
                 },
                 "aaaa-bbbb-cccc-dddd",
@@ -72,7 +72,7 @@ describe("utilities", () => {
                 expiration: "0",
                 nonce: "1",
                 feeRateBps: "100",
-                signatureType: SignatureType.POLY_GNOSIS_SAFE,
+                signatureType: SignatureType.KUEST_GNOSIS_SAFE,
                 signature: "0x",
             };
 
@@ -109,7 +109,7 @@ describe("utilities", () => {
                     expiration: "0",
                     nonce: "1",
                     feeRateBps: "100",
-                    signatureType: SignatureType.POLY_GNOSIS_SAFE,
+                    signatureType: SignatureType.KUEST_GNOSIS_SAFE,
                     signature: "0x",
                 },
                 "aaaa-bbbb-cccc-dddd",
@@ -154,7 +154,7 @@ describe("utilities", () => {
                     expiration: "0",
                     nonce: "1",
                     feeRateBps: "100",
-                    signatureType: SignatureType.POLY_GNOSIS_SAFE,
+                    signatureType: SignatureType.KUEST_GNOSIS_SAFE,
                     signature: "0x",
                 },
                 "aaaa-bbbb-cccc-dddd",
@@ -199,7 +199,7 @@ describe("utilities", () => {
                     expiration: "0",
                     nonce: "1",
                     feeRateBps: "100",
-                    signatureType: SignatureType.POLY_PROXY,
+                    signatureType: SignatureType.KUEST_PROXY,
                     signature: "0x",
                 },
                 "aaaa-bbbb-cccc-dddd",
@@ -244,7 +244,7 @@ describe("utilities", () => {
                     expiration: "0",
                     nonce: "1",
                     feeRateBps: "100",
-                    signatureType: SignatureType.POLY_GNOSIS_SAFE,
+                    signatureType: SignatureType.KUEST_GNOSIS_SAFE,
                     signature: "0x",
                 },
                 "aaaa-bbbb-cccc-dddd",
@@ -289,7 +289,7 @@ describe("utilities", () => {
                     expiration: "0",
                     nonce: "1",
                     feeRateBps: "100",
-                    signatureType: SignatureType.POLY_GNOSIS_SAFE,
+                    signatureType: SignatureType.KUEST_GNOSIS_SAFE,
                     signature: "0x",
                 },
                 "aaaa-bbbb-cccc-dddd",
@@ -378,7 +378,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_PROXY", async () => {
+                    it("GTD BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -389,7 +389,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -423,7 +423,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTD BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -434,7 +434,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -513,7 +513,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_PROXY", async () => {
+                    it("GTD SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -524,7 +524,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -558,7 +558,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTD SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -569,7 +569,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -647,7 +647,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_PROXY", async () => {
+                    it("GTC BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -657,7 +657,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -691,7 +691,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTC BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -701,7 +701,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -779,7 +779,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_PROXY", async () => {
+                    it("GTC SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -789,7 +789,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -823,7 +823,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTC SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -833,7 +833,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -911,7 +911,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_PROXY", async () => {
+                    it("FOK BUY KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -921,7 +921,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -955,7 +955,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_GNOSIS_SAFE", async () => {
+                    it("FOK BUY KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -965,7 +965,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -1043,7 +1043,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_PROXY", async () => {
+                    it("FOK SELL KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -1053,7 +1053,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -1087,7 +1087,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_GNOSIS_SAFE", async () => {
+                    it("FOK SELL KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -1097,7 +1097,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.1", negRisk: false },
@@ -1188,7 +1188,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_PROXY", async () => {
+                    it("GTD BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -1199,7 +1199,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1233,7 +1233,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTD BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -1244,7 +1244,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1323,7 +1323,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_PROXY", async () => {
+                    it("GTD SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -1334,7 +1334,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1368,7 +1368,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTD SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -1379,7 +1379,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1457,7 +1457,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_PROXY", async () => {
+                    it("GTC BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -1467,7 +1467,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1501,7 +1501,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTC BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -1511,7 +1511,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1589,7 +1589,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_PROXY", async () => {
+                    it("GTC SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -1599,7 +1599,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1633,7 +1633,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTC SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -1643,7 +1643,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1721,7 +1721,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_PROXY", async () => {
+                    it("FOK BUY KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -1731,7 +1731,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1765,7 +1765,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_GNOSIS_SAFE", async () => {
+                    it("FOK BUY KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -1775,7 +1775,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1853,7 +1853,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_PROXY", async () => {
+                    it("FOK SELL KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -1863,7 +1863,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1897,7 +1897,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_GNOSIS_SAFE", async () => {
+                    it("FOK SELL KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -1907,7 +1907,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.01", negRisk: false },
@@ -1998,7 +1998,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_PROXY", async () => {
+                    it("GTD BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -2009,7 +2009,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2043,7 +2043,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTD BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -2054,7 +2054,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2133,7 +2133,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_PROXY", async () => {
+                    it("GTD SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -2144,7 +2144,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2178,7 +2178,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTD SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -2189,7 +2189,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2267,7 +2267,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_PROXY", async () => {
+                    it("GTC BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -2277,7 +2277,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2311,7 +2311,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTC BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -2321,7 +2321,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2399,7 +2399,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_PROXY", async () => {
+                    it("GTC SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -2409,7 +2409,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2443,7 +2443,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTC SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -2453,7 +2453,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2531,7 +2531,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_PROXY", async () => {
+                    it("FOK BUY KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -2541,7 +2541,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2575,7 +2575,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_GNOSIS_SAFE", async () => {
+                    it("FOK BUY KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -2585,7 +2585,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2663,7 +2663,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_PROXY", async () => {
+                    it("FOK SELL KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -2673,7 +2673,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2707,7 +2707,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_GNOSIS_SAFE", async () => {
+                    it("FOK SELL KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -2717,7 +2717,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.001", negRisk: false },
@@ -2808,7 +2808,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_PROXY", async () => {
+                    it("GTD BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -2819,7 +2819,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -2853,7 +2853,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTD BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -2864,7 +2864,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -2943,7 +2943,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_PROXY", async () => {
+                    it("GTD SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -2954,7 +2954,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -2988,7 +2988,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTD SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -2999,7 +2999,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -3077,7 +3077,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_PROXY", async () => {
+                    it("GTC BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -3087,7 +3087,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -3121,7 +3121,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTC BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -3131,7 +3131,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -3209,7 +3209,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_PROXY", async () => {
+                    it("GTC SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -3219,7 +3219,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -3253,7 +3253,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTC SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -3263,7 +3263,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -3341,7 +3341,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_PROXY", async () => {
+                    it("FOK BUY KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -3351,7 +3351,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -3385,7 +3385,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_GNOSIS_SAFE", async () => {
+                    it("FOK BUY KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -3395,7 +3395,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -3473,7 +3473,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_PROXY", async () => {
+                    it("FOK SELL KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -3483,7 +3483,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -3517,7 +3517,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_GNOSIS_SAFE", async () => {
+                    it("FOK SELL KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -3527,7 +3527,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.0001", negRisk: false },
@@ -3620,7 +3620,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_PROXY", async () => {
+                    it("GTD BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -3631,7 +3631,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -3665,7 +3665,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTD BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -3676,7 +3676,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -3755,7 +3755,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_PROXY", async () => {
+                    it("GTD SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -3766,7 +3766,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -3800,7 +3800,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTD SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -3811,7 +3811,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -3889,7 +3889,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_PROXY", async () => {
+                    it("GTC BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -3899,7 +3899,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -3933,7 +3933,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTC BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -3943,7 +3943,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -4021,7 +4021,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_PROXY", async () => {
+                    it("GTC SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -4031,7 +4031,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -4065,7 +4065,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTC SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.5,
@@ -4075,7 +4075,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -4153,7 +4153,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_PROXY", async () => {
+                    it("FOK BUY KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -4163,7 +4163,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -4197,7 +4197,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_GNOSIS_SAFE", async () => {
+                    it("FOK BUY KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -4207,7 +4207,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -4285,7 +4285,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_PROXY", async () => {
+                    it("FOK SELL KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -4295,7 +4295,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -4329,7 +4329,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_GNOSIS_SAFE", async () => {
+                    it("FOK SELL KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -4339,7 +4339,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.1", negRisk: true },
@@ -4430,7 +4430,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_PROXY", async () => {
+                    it("GTD BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -4441,7 +4441,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -4475,7 +4475,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTD BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -4486,7 +4486,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -4565,7 +4565,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_PROXY", async () => {
+                    it("GTD SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -4576,7 +4576,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -4610,7 +4610,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTD SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -4621,7 +4621,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -4699,7 +4699,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_PROXY", async () => {
+                    it("GTC BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -4709,7 +4709,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -4743,7 +4743,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTC BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -4753,7 +4753,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -4831,7 +4831,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_PROXY", async () => {
+                    it("GTC SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -4841,7 +4841,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -4875,7 +4875,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTC SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.05,
@@ -4885,7 +4885,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -4963,7 +4963,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_PROXY", async () => {
+                    it("FOK BUY KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -4973,7 +4973,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -5007,7 +5007,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_GNOSIS_SAFE", async () => {
+                    it("FOK BUY KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -5017,7 +5017,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -5095,7 +5095,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_PROXY", async () => {
+                    it("FOK SELL KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -5105,7 +5105,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -5139,7 +5139,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_GNOSIS_SAFE", async () => {
+                    it("FOK SELL KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -5149,7 +5149,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.01", negRisk: true },
@@ -5240,7 +5240,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_PROXY", async () => {
+                    it("GTD BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -5251,7 +5251,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -5285,7 +5285,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTD BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -5296,7 +5296,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -5375,7 +5375,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_PROXY", async () => {
+                    it("GTD SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -5386,7 +5386,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -5420,7 +5420,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTD SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -5431,7 +5431,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -5509,7 +5509,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_PROXY", async () => {
+                    it("GTC BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -5519,7 +5519,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -5553,7 +5553,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTC BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -5563,7 +5563,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -5641,7 +5641,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_PROXY", async () => {
+                    it("GTC SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -5651,7 +5651,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -5685,7 +5685,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTC SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.005,
@@ -5695,7 +5695,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -5773,7 +5773,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_PROXY", async () => {
+                    it("FOK BUY KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -5783,7 +5783,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -5817,7 +5817,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_GNOSIS_SAFE", async () => {
+                    it("FOK BUY KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -5827,7 +5827,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -5905,7 +5905,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_PROXY", async () => {
+                    it("FOK SELL KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -5915,7 +5915,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -5949,7 +5949,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_GNOSIS_SAFE", async () => {
+                    it("FOK SELL KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -5959,7 +5959,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.001", negRisk: true },
@@ -6050,7 +6050,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_PROXY", async () => {
+                    it("GTD BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -6061,7 +6061,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: true },
@@ -6095,7 +6095,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTD BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -6106,7 +6106,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: true },
@@ -6185,7 +6185,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_PROXY", async () => {
+                    it("GTD SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -6196,7 +6196,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: true },
@@ -6230,7 +6230,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTD SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTD SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -6241,7 +6241,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: true },
@@ -6319,7 +6319,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_PROXY", async () => {
+                    it("GTC BUY KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -6329,7 +6329,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: true },
@@ -6363,7 +6363,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC BUY POLY_GNOSIS_SAFE", async () => {
+                    it("GTC BUY KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -6373,7 +6373,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: true },
@@ -6451,7 +6451,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_PROXY", async () => {
+                    it("GTC SELL KUEST_PROXY", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -6461,7 +6461,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: true },
@@ -6495,7 +6495,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("GTC SELL POLY_GNOSIS_SAFE", async () => {
+                    it("GTC SELL KUEST_GNOSIS_SAFE", async () => {
                         const userOrder = {
                             tokenID: token,
                             price: 0.0005,
@@ -6505,7 +6505,7 @@ describe("utilities", () => {
                         const signedOrder = await createOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userOrder,
                             { tickSize: "0.0001", negRisk: true },
@@ -6583,7 +6583,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_PROXY", async () => {
+                    it("FOK BUY KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -6593,7 +6593,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.0001", negRisk: true },
@@ -6627,7 +6627,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK BUY POLY_GNOSIS_SAFE", async () => {
+                    it("FOK BUY KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.BUY,
                             tokenID: token,
@@ -6637,7 +6637,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.0001", negRisk: true },
@@ -6715,7 +6715,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_PROXY", async () => {
+                    it("FOK SELL KUEST_PROXY", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -6725,7 +6725,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_PROXY,
+                            SignatureType.KUEST_PROXY,
                             address,
                             userMarketOrder,
                             { tickSize: "0.0001", negRisk: true },
@@ -6759,7 +6759,7 @@ describe("utilities", () => {
                         });
                     });
 
-                    it("FOK SELL POLY_GNOSIS_SAFE", async () => {
+                    it("FOK SELL KUEST_GNOSIS_SAFE", async () => {
                         const userMarketOrder: UserMarketOrder = {
                             side: Side.SELL,
                             tokenID: token,
@@ -6769,7 +6769,7 @@ describe("utilities", () => {
                         const signedOrder = await createMarketOrder(
                             wallet,
                             chainId,
-                            SignatureType.POLY_GNOSIS_SAFE,
+                            SignatureType.KUEST_GNOSIS_SAFE,
                             address,
                             userMarketOrder,
                             { tickSize: "0.0001", negRisk: true },

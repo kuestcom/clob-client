@@ -33,14 +33,14 @@ function arrayBufferToBase64(buffer: ArrayBuffer): string {
 }
 
 /**
- * Builds the canonical Polymarket CLOB HMAC signature
+ * Builds the canonical Kuest CLOB HMAC signature
  * @param signer
  * @param key
  * @param secret
  * @param passphrase
  * @returns string
  */
-export const buildPolyHmacSignature = async (
+export const buildKuestHmacSignature = async (
     secret: string,
     timestamp: number,
     method: string,
