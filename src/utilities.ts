@@ -1,4 +1,5 @@
 import type { SignedOrder } from "./order-utils/index.ts";
+import { getSiteOrderPayload } from "./site-config.ts";
 import { Side as UtilsSide } from "./order-utils/index.ts";
 import type { NewOrder, OrderBookSummary, TickSize } from "./types.ts";
 import { OrderType, Side } from "./types.ts";
@@ -40,6 +41,7 @@ export function orderToJson<T extends OrderType>(
         },
         owner,
         orderType,
+        ...getSiteOrderPayload(),
         ...(typeof postOnly === "boolean" ? { postOnly } : {}),
     } as NewOrder<T>;
 }

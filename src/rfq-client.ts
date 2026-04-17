@@ -19,6 +19,7 @@ import { DELETE, GET, POST } from "./http-helpers/index.ts";
 import { ROUNDING_CONFIG } from "./order-builder/helpers.ts";
 import type { IRfqClient, RfqDeps } from "./rfq-deps.ts";
 import type { ClobSigner } from "./signer.ts";
+import { getSiteOrderPayload } from "./site-config.ts";
 import type {
     AcceptQuoteParams,
     ApiKeyCreds,
@@ -438,6 +439,7 @@ export class RfqClient implements IRfqClient {
             requestId: payload.requestId,
             quoteId: payload.quoteId,
             owner: (this.deps.creds as ApiKeyCreds).key,
+            ...getSiteOrderPayload(),
             ...order,
             expiration: Number.parseInt(order.expiration, 10),
             side: orderSide,
@@ -504,6 +506,7 @@ export class RfqClient implements IRfqClient {
             requestId: payload.requestId,
             quoteId: payload.quoteId,
             owner: (this.deps.creds as ApiKeyCreds).key,
+            ...getSiteOrderPayload(),
             ...order,
             expiration: Number.parseInt(order.expiration, 10),
             side: side,

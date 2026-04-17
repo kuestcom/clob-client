@@ -62,7 +62,6 @@ import {
     ApiError,
     BUILDER_AUTH_FAILED,
     BUILDER_AUTH_NOT_AVAILABLE,
-    BUILDER_SIGNING_DISABLED,
     L1_AUTH_UNAVAILABLE_ERROR,
     L2_AUTH_NOT_AVAILABLE,
 } from "./errors.ts";
@@ -141,8 +140,7 @@ import {
     orderToJson,
     priceValid,
 } from "./utilities.ts";
-
-const BUILDER_SIGNING_ENABLED = false;
+import { GEOBLOCK_HOST, SITE_CONFIG } from "./site-config.ts";
 
 export class ClobClient {
     readonly host: string;
@@ -178,6 +176,12 @@ export class ClobClient {
     private tickSizeTimestamps: Record<string, number>;
 
     private readonly tickSizeTtlMs: number;
+
+    private geoblockStatus?: {
+        blocked: boolean;
+        country?: string;
+        region?: string;
+    };
 
     // eslint-disable-next-line max-params
     constructor(
@@ -1416,7 +1420,9 @@ export class ClobClient {
     }
 
     public async createBuilderApiKey(): Promise<BuilderApiKey> {
-        this.ensureBuilderSigningEnabled();
+        if (!SITE_CONFIG.builder_mode) {
+            throw BUILDER_AUTH_NOT_AVAILABLE;
+        }
         this.canL2Auth();
 
         const endpoint = CREATE_BUILDER_API_KEY;
@@ -1436,7 +1442,9 @@ export class ClobClient {
     }
 
     public async getBuilderApiKeys(): Promise<BuilderApiKeyResponse[]> {
-        this.ensureBuilderSigningEnabled();
+        if (!SITE_CONFIG.builder_mode) {
+            throw BUILDER_AUTH_NOT_AVAILABLE;
+        }
         this.canL2Auth();
 
         const endpoint = GET_BUILDER_API_KEYS;
@@ -1456,7 +1464,6 @@ export class ClobClient {
     }
 
     public async revokeBuilderApiKey(): Promise<any> {
-        this.ensureBuilderSigningEnabled();
         this.mustBuilderAuth();
 
         const endpoint = REVOKE_BUILDER_API_KEY;
@@ -1497,6 +1504,7 @@ export class ClobClient {
     }
 
     protected async post(endpoint: string, options?: RequestOptions) {
+        await this.ensureGeoblockAllowed();
         const result = await post(
             endpoint,
             {
@@ -1509,6 +1517,7 @@ export class ClobClient {
     }
 
     protected async put(endpoint: string, options?: RequestOptions) {
+        await this.ensureGeoblockAllowed();
         const result = await put(endpoint, {
             ...options,
             params: { ...options?.params, geo_block_token: this.geoBlockToken },
@@ -1517,6 +1526,7 @@ export class ClobClient {
     }
 
     protected async del(endpoint: string, options?: RequestOptions) {
+        await this.ensureGeoblockAllowed();
         const result = await del(endpoint, {
             ...options,
             params: { ...options?.params, geo_block_token: this.geoBlockToken },
@@ -1550,20 +1560,13 @@ export class ClobClient {
     }
 
     private mustBuilderAuth(): void {
-        this.ensureBuilderSigningEnabled();
         if (!this.canBuilderAuth()) {
             throw BUILDER_AUTH_NOT_AVAILABLE;
         }
     }
 
     private canBuilderAuth(): boolean {
-        return BUILDER_SIGNING_ENABLED && (this.builderConfig?.isValid() ?? false);
-    }
-
-    private ensureBuilderSigningEnabled(): void {
-        if (!BUILDER_SIGNING_ENABLED) {
-            throw BUILDER_SIGNING_DISABLED;
-        }
+        return SITE_CONFIG.builder_mode && (this.builderConfig?.isValid() ?? false);
     }
 
     private async _resolveFeeRateBps(tokenID: string, userFeeRateBps?: number): Promise<number> {
@@ -1605,6 +1608,34 @@ export class ClobClient {
         body?: string,
     ): Promise<BuilderHeaderPayload | undefined> {
         return (this.builderConfig as BuilderConfig).generateBuilderHeaders(method, path, body);
+    }
+
+    private async ensureGeoblockAllowed(): Promise<void> {
+        if (!SITE_CONFIG.geoblock) {
+            return;
+        }
+
+        if (this.geoblockStatus === undefined) {
+            if (!SITE_CONFIG.site_url.trim()) {
+                throw new Error("site_url must be configured when geoblock is enabled");
+            }
+
+            const result = await get(
+                `${GEOBLOCK_HOST}/?url=${encodeURIComponent(SITE_CONFIG.site_url)}`,
+            );
+            if (result && typeof result === "object" && "error" in result) {
+                const message =
+                    typeof result.error === "string" ? result.error : JSON.stringify(result.error);
+                throw new ApiError(message, result.status, result);
+            }
+            this.geoblockStatus = result;
+        }
+
+        if (this.geoblockStatus?.blocked) {
+            throw new Error(
+                `trading blocked for configured site_url (${SITE_CONFIG.site_url}) in ${this.geoblockStatus.country ?? "unknown"}, ${this.geoblockStatus.region ?? "unknown"}`,
+            );
+        }
     }
 
     /**

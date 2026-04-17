@@ -49,8 +49,8 @@ See [examples](examples/) for more information
 
 ### Builder signing
 
-Builder signing: disabled.
-To enable later, remove line 145 of `src/client.ts`: `const BUILDER_SIGNING_ENABLED = false;`
+Builder signing: controlled by `src/site-config.ts`.
+Set `builder_mode` to `true` there to enable builder headers for this SDK build.
 
 ### Using viem WalletClient
 
