@@ -22,3 +22,7 @@ export const BUILDER_AUTH_NOT_AVAILABLE = new Error(
 );
 
 export const BUILDER_AUTH_FAILED = new Error("Builder key auth failed!");
+
+export const BUILDER_SIGNING_DISABLED = new Error(
+    "Builder signing is disabled in this client build.",
+);

@@ -47,6 +47,11 @@ const signatureType = 1;
 
 See [examples](examples/) for more information
 
+### Builder signing
+
+Builder signing: disabled.
+To enable later, remove line 145 of `src/client.ts`: `const BUILDER_SIGNING_ENABLED = false;`
+
 ### Using viem WalletClient
 
 ```ts

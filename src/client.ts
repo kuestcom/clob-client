@@ -62,6 +62,7 @@ import {
     ApiError,
     BUILDER_AUTH_FAILED,
     BUILDER_AUTH_NOT_AVAILABLE,
+    BUILDER_SIGNING_DISABLED,
     L1_AUTH_UNAVAILABLE_ERROR,
     L2_AUTH_NOT_AVAILABLE,
 } from "./errors.ts";
@@ -140,6 +141,8 @@ import {
     orderToJson,
     priceValid,
 } from "./utilities.ts";
+
+const BUILDER_SIGNING_ENABLED = false;
 
 export class ClobClient {
     readonly host: string;
@@ -1413,6 +1416,7 @@ export class ClobClient {
     }
 
     public async createBuilderApiKey(): Promise<BuilderApiKey> {
+        this.ensureBuilderSigningEnabled();
         this.canL2Auth();
 
         const endpoint = CREATE_BUILDER_API_KEY;
@@ -1432,6 +1436,7 @@ export class ClobClient {
     }
 
     public async getBuilderApiKeys(): Promise<BuilderApiKeyResponse[]> {
+        this.ensureBuilderSigningEnabled();
         this.canL2Auth();
 
         const endpoint = GET_BUILDER_API_KEYS;
@@ -1451,6 +1456,7 @@ export class ClobClient {
     }
 
     public async revokeBuilderApiKey(): Promise<any> {
+        this.ensureBuilderSigningEnabled();
         this.mustBuilderAuth();
 
         const endpoint = REVOKE_BUILDER_API_KEY;
@@ -1544,13 +1550,20 @@ export class ClobClient {
     }
 
     private mustBuilderAuth(): void {
+        this.ensureBuilderSigningEnabled();
         if (!this.canBuilderAuth()) {
             throw BUILDER_AUTH_NOT_AVAILABLE;
         }
     }
 
     private canBuilderAuth(): boolean {
-        return this.builderConfig?.isValid() ?? false;
+        return BUILDER_SIGNING_ENABLED && (this.builderConfig?.isValid() ?? false);
+    }
+
+    private ensureBuilderSigningEnabled(): void {
+        if (!BUILDER_SIGNING_ENABLED) {
+            throw BUILDER_SIGNING_DISABLED;
+        }
     }
 
     private async _resolveFeeRateBps(tokenID: string, userFeeRateBps?: number): Promise<number> {
