@@ -34,6 +34,10 @@
         {
             "name": "Danny Dresner",
             "url": "https://github.com/ddresner-pm"
+        },
+        {
+            "name": "Bruno Maciel",
+            "url": "https://github.com/ibruno"
         }
     ],
     "main": "dist/index.js",
