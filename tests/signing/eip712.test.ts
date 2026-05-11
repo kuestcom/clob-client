@@ -42,7 +42,6 @@ describe("eip712", () => {
         expect(receivedMessage).to.deep.include({
             address: accountAddress,
             timestamp: "10000000",
-            nonce: 23,
         });
     });
 });

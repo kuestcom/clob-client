@@ -72,15 +72,15 @@ export interface NewOrder<T extends OrderType> {
         readonly salt: number;
         readonly maker: string;
         readonly signer: string;
-        readonly taker: string;
         readonly tokenId: string;
         readonly makerAmount: string;
         readonly takerAmount: string;
-        readonly expiration: string;
-        readonly nonce: string;
-        readonly feeRateBps: string;
         readonly side: Side; // string
         readonly signatureType: SignatureType;
+        readonly timestamp: string;
+        readonly expiration: string;
+        readonly metadata: string;
+        readonly builder: string;
         readonly signature: string;
     };
     readonly owner: string;
@@ -114,24 +114,19 @@ export interface UserOrder {
     side: Side;
 
     /**
-     * Fee rate, in basis points, charged to the order maker, charged on proceeds
-     */
-    feeRateBps?: number;
-
-    /**
-     * Nonce used for onchain cancellations
-     */
-    nonce?: number;
-
-    /**
      * Timestamp after which the order is expired.
      */
     expiration?: number;
 
     /**
-     * Address of the order taker. The zero address is used to indicate a public order
+     * Optional metadata bytes32.
      */
-    taker?: string;
+    metadata?: string;
+
+    /**
+     * Optional builder code bytes32.
+     */
+    builderCode?: string;
 }
 
 // Simplified market order for users
@@ -159,26 +154,26 @@ export interface UserMarketOrder {
     side: Side;
 
     /**
-     * Fee rate, in basis points, charged to the order maker, charged on proceeds
-     */
-    feeRateBps?: number;
-
-    /**
-     * Nonce used for onchain cancellations
-     */
-    nonce?: number;
-
-    /**
-     * Address of the order taker. The zero address is used to indicate a public order
-     */
-    taker?: string;
-
-    /**
      * Specifies the type of order execution:
      * - FOK (Fill or Kill): The order must be filled entirely or not at all.
      * - FAK (Fill and Kill): The order can be partially filled, and any unfilled portion is canceled.
      */
     orderType?: OrderType.FOK | OrderType.FAK;
+
+    /**
+     * Optional metadata bytes32.
+     */
+    metadata?: string;
+
+    /**
+     * Optional builder code bytes32.
+     */
+    builderCode?: string;
+
+    /**
+     * Optional USDC balance used to size BUY market orders after taker fees.
+     */
+    userUSDCBalance?: number;
 }
 
 export interface OrderPayload {
@@ -222,6 +217,57 @@ export interface OpenOrder {
 }
 
 export type OpenOrdersResponse = OpenOrder[];
+
+export interface FeeInfo {
+    makerRateBps: number;
+    takerRateBps: number;
+    rate: number;
+    exponent: number;
+}
+
+export interface FeeInfos {
+    [tokenId: string]: FeeInfo;
+}
+
+export interface BuilderFeeRate {
+    maker: number;
+    taker: number;
+}
+
+export interface BuilderFeeRates {
+    [builderCode: string]: BuilderFeeRate;
+}
+
+export type TokenConditionMap = Record<string, string>;
+
+export interface ClobToken {
+    t?: string;
+    o?: string;
+    token_id?: string;
+    outcome?: string;
+}
+
+export interface ClobFeeDetails {
+    r?: number;
+    e?: number;
+    maker_fee_rate_bps?: number | string;
+    taker_fee_rate_bps?: number | string;
+    builder_maker_fee_rate_bps?: number | string;
+    builder_taker_fee_rate_bps?: number | string;
+}
+
+export interface MarketDetails {
+    c?: string;
+    condition_id?: string;
+    t?: Array<ClobToken | null>;
+    tokens?: Array<ClobToken | null>;
+    mts?: number | string;
+    min_tick_size?: number | string;
+    mos?: number | string;
+    nr?: boolean;
+    neg_risk?: boolean;
+    fd?: ClobFeeDetails;
+}
 
 export interface TradeParams {
     id?: string;

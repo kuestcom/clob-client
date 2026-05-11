@@ -9,12 +9,10 @@ export class OrderBuilder {
 
     readonly chainId: Chain;
 
-    // Signature type used sign orders, defaults to EOA type
+    // Kuest only supports Deposit Wallet order signatures.
     readonly signatureType: SignatureType;
 
-    // Address which holds funds to be used.
-    // Used for Kuest proxy wallets and other smart contract wallets
-    // If not provided, funderAddress is the signer address
+    // Deposit Wallet address that holds funds and appears as order maker.
     readonly funderAddress?: string;
 
     /**
@@ -35,7 +33,10 @@ export class OrderBuilder {
     ) {
         this.signer = signer;
         this.chainId = chainId;
-        this.signatureType = signatureType === undefined ? SignatureType.EOA : signatureType;
+        this.signatureType = signatureType ?? SignatureType.DEPOSIT_WALLET;
+        if (this.signatureType !== SignatureType.DEPOSIT_WALLET) {
+            throw new Error("Kuest order flow supports only Deposit Wallet signature type 3");
+        }
         this.funderAddress = funderAddress;
         this.getSigner = getSigner;
     }

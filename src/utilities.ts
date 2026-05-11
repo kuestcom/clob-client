@@ -1,6 +1,7 @@
+import { ZERO_BYTES32 } from "./order-utils/exchange.order.const.ts";
 import type { SignedOrder } from "./order-utils/index.ts";
+import { SignatureType, Side as UtilsSide } from "./order-utils/index.ts";
 import { getSiteOrderPayload } from "./site-config.ts";
-import { Side as UtilsSide } from "./order-utils/index.ts";
 import type { NewOrder, OrderBookSummary, TickSize } from "./types.ts";
 import { OrderType, Side } from "./types.ts";
 
@@ -11,6 +12,10 @@ export function orderToJson<T extends OrderType>(
     deferExec = false,
     postOnly?: boolean,
 ): NewOrder<T> {
+    if (order.signatureType !== SignatureType.DEPOSIT_WALLET) {
+        throw new Error("Kuest order submission supports only Deposit Wallet signature type 3");
+    }
+
     if (postOnly === true && orderType !== OrderType.GTC && orderType !== OrderType.GTD) {
         throw new Error("postOnly is only supported for GTC and GTD orders");
     }
@@ -28,15 +33,19 @@ export function orderToJson<T extends OrderType>(
             salt: Number.parseInt(order.salt, 10),
             maker: order.maker,
             signer: order.signer,
-            taker: order.taker,
             tokenId: order.tokenId,
             makerAmount: order.makerAmount,
             takerAmount: order.takerAmount,
             side,
             expiration: order.expiration,
-            nonce: order.nonce,
-            feeRateBps: order.feeRateBps,
             signatureType: order.signatureType,
+            timestamp: order.timestamp ?? "0",
+            metadata:
+                order.metadata ??
+                "0x0000000000000000000000000000000000000000000000000000000000000000",
+            builder:
+                order.builder ??
+                "0x0000000000000000000000000000000000000000000000000000000000000000",
             signature: order.signature,
         },
         owner,
@@ -113,4 +122,42 @@ export const isTickSizeSmaller = (a: TickSize, b: TickSize): boolean => {
 
 export const priceValid = (price: number, tickSize: TickSize): boolean => {
     return price >= Number.parseFloat(tickSize) && price <= 1 - Number.parseFloat(tickSize);
+};
+
+export const builderCodeToBytes32 = (builderCode?: string): string => {
+    const value = builderCode?.trim();
+    if (!value || value === ZERO_BYTES32) {
+        return ZERO_BYTES32;
+    }
+
+    const hex = value.startsWith("0x") || value.startsWith("0X") ? value.slice(2) : value;
+    if (/^[0-9a-fA-F]{40}$/.test(hex)) {
+        return `0x${hex.padStart(64, "0")}`.toLowerCase();
+    }
+    if (/^[0-9a-fA-F]{64}$/.test(hex)) {
+        return `0x${hex}`.toLowerCase();
+    }
+
+    throw new Error("builderCode must be an address or bytes32 hex string");
+};
+
+export const adjustBuyAmountForFees = (
+    amount: number,
+    price: number,
+    userUSDCBalance: number,
+    kuestTakerFeeRateBps: number,
+    builderTakerFeeRateBps: number,
+): number => {
+    const totalFeeRate = (kuestTakerFeeRateBps + builderTakerFeeRateBps) / 10_000;
+    const totalCost = amount * (1 + totalFeeRate);
+    if (userUSDCBalance >= totalCost) {
+        return amount;
+    }
+    const adjusted = userUSDCBalance / (1 + totalFeeRate);
+    if (adjusted <= 0) {
+        throw new Error(
+            `userUSDCBalance ${userUSDCBalance} too small to cover fees at price ${price}`,
+        );
+    }
+    return adjusted;
 };
