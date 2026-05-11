@@ -16,7 +16,10 @@ async function main() {
         secret: `${process.env.CLOB_SECRET}`,
         passphrase: `${process.env.CLOB_PASS_PHRASE}`,
     };
-    const depositWallet = process.env.DEPOSIT_WALLET || "";
+    const depositWallet = process.env.DEPOSIT_WALLET;
+    if (!depositWallet) {
+        throw new Error("DEPOSIT_WALLET is required for Deposit Wallet orders");
+    }
     const clobClient = new ClobClient(host, chainId, wallet, creds, SignatureType.DEPOSIT_WALLET, depositWallet);
 
     // Create a buy order for 100 YES for 0.50c with an expiration of 1 minute

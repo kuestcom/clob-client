@@ -8,7 +8,7 @@ importers:
 
   .:
     dependencies:
-      '@polymarket/builder-signing-sdk':
+      '@kuestcom/builder-signing-sdk':
         specifier: ^1.0.0
         version: 1.0.0
       axios:
@@ -391,6 +391,9 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
+  '@kuestcom/builder-signing-sdk@1.0.0':
+    resolution: {integrity: sha512-y5RCpUxsBJGZdRyum5ISKd4+ok3Fv1vihuzRmTWaC5dg3+QU4u6EIEhq8ciGAd21QZ1TgFQAaOjUiEGVzAHLjw==}
+
   '@noble/ciphers@1.3.0':
     resolution: {integrity: sha512-2I0gnIVPtfnMw9ee9h1dJG7tp81+8Ob3OJb3Mv37rx5L40/b0i7djjCVvGOVqc9AEIQyvyu1i6ypKdFw8R8gQw==}
     engines: {node: ^14.21.3 || >=16}
@@ -402,9 +405,6 @@ packages:
   '@noble/hashes@1.8.0':
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
-
-  '@polymarket/builder-signing-sdk@1.0.0':
-    resolution: {integrity: sha512-LNHc8Ox+2ITM6+VIEH5LH3SVh9ScE2mOUAJI789YfyNqhF4n1cNulk35Hb6IZfy1xtNfcEfNotanPLa/U8dCaw==}
 
   '@rollup/rollup-android-arm-eabi@4.59.0':
     resolution: {integrity: sha512-upnNBkA6ZH2VKGcBj9Fyl9IGNPULcjXRlg0LLeaioQWueH30p6IXtJEbKAgvyv+mJaMxSm1l6xwDXYjpEMiLMg==}
@@ -1614,6 +1614,12 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
+  '@kuestcom/builder-signing-sdk@1.0.0':
+    dependencies:
+      axios: 1.14.0
+    transitivePeerDependencies:
+      - debug
+
   '@noble/ciphers@1.3.0': {}
 
   '@noble/curves@1.9.1':
@@ -1621,12 +1627,6 @@ snapshots:
       '@noble/hashes': 1.8.0
 
   '@noble/hashes@1.8.0': {}
-
-  '@polymarket/builder-signing-sdk@1.0.0':
-    dependencies:
-      axios: 1.14.0
-    transitivePeerDependencies:
-      - debug
 
   '@rollup/rollup-android-arm-eabi@4.59.0':
     optional: true

@@ -106,17 +106,17 @@ export interface Order extends EIP712Object {
     /**
      * Millisecond timestamp included in the signed order.
      */
-    readonly timestamp?: string;
+    readonly timestamp: string;
 
     /**
      * Metadata bytes32 included in the signed order.
      */
-    readonly metadata?: string;
+    readonly metadata: string;
 
     /**
      * Builder code bytes32 included in the signed order.
      */
-    readonly builder?: string;
+    readonly builder: string;
 
     /**
      * The side of the order, BUY or SELL

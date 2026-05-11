@@ -80,7 +80,7 @@ const clobClient = new ClobClient(host, 80002, walletClient);
 By default, API errors are returned as `{ error: "...", status: ... }` objects. To have the client throw errors instead, pass `throwOnError: true` as the last constructor argument:
 
 ```ts
-import { ClobClient, ApiError } from "@kuestcom/clob-client";
+import { ClobClient, ApiError, SignatureType } from "@kuestcom/clob-client";
 
 const clobClient = new ClobClient(
     host, 80002, signer, await creds, SignatureType.DEPOSIT_WALLET, depositWallet,
