@@ -29,7 +29,7 @@ async function main() {
         chainId,
         wallet,
         creds,
-        SignatureType.EOA,
+        SignatureType.DEPOSIT_WALLET,
         undefined,
         undefined,
         undefined,

@@ -1,13 +1,9 @@
 import { parseUnits } from "viem";
 import { COLLATERAL_TOKEN_DECIMALS, getContractConfig } from "../config.ts";
+import { ZERO_BYTES32 } from "../order-utils/exchange.order.const.ts";
 import type { OrderData, SignedOrder } from "../order-utils/index.ts";
-import {
-    ExchangeOrderBuilder,
-    type SignatureType,
-    Side as UtilsSide,
-} from "../order-utils/index.ts";
+import { ExchangeOrderBuilder, SignatureType, Side as UtilsSide } from "../order-utils/index.ts";
 import type { ClobSigner } from "../signer.ts";
-import { getSignerAddress } from "../signer.ts";
 import type {
     Chain,
     CreateOrderOptions,
@@ -18,7 +14,13 @@ import type {
     UserOrder,
 } from "../types.ts";
 import { OrderType, Side } from "../types.ts";
-import { decimalPlaces, roundDown, roundNormal, roundUp } from "../utilities.ts";
+import {
+    builderCodeToBytes32,
+    decimalPlaces,
+    roundDown,
+    roundNormal,
+    roundUp,
+} from "../utilities.ts";
 
 export const ROUNDING_CONFIG: Record<TickSize, RoundConfig> = {
     "0.1": {
@@ -125,38 +127,17 @@ export const buildOrderCreationArgs = async (
     const makerAmount = parseUnits(rawMakerAmt.toString(), COLLATERAL_TOKEN_DECIMALS).toString();
     const takerAmount = parseUnits(rawTakerAmt.toString(), COLLATERAL_TOKEN_DECIMALS).toString();
 
-    let taker;
-    if (typeof userOrder.taker !== "undefined" && userOrder.taker) {
-        taker = userOrder.taker;
-    } else {
-        taker = "0x0000000000000000000000000000000000000000";
-    }
-
-    let feeRateBps;
-    if (typeof userOrder.feeRateBps !== "undefined" && userOrder.feeRateBps) {
-        feeRateBps = userOrder.feeRateBps.toString();
-    } else {
-        feeRateBps = "0";
-    }
-
-    let nonce;
-    if (typeof userOrder.nonce !== "undefined" && userOrder.nonce) {
-        nonce = userOrder.nonce.toString();
-    } else {
-        nonce = "0";
-    }
-
     return {
         maker,
-        taker,
         tokenId: userOrder.tokenID,
         makerAmount,
         takerAmount,
         side,
-        feeRateBps,
-        nonce,
         signer,
         expiration: (userOrder.expiration || 0).toString(),
+        timestamp: Date.now().toString(),
+        metadata: userOrder.metadata ?? ZERO_BYTES32,
+        builder: builderCodeToBytes32(userOrder.builderCode),
         signatureType,
     } as OrderData;
 };
@@ -169,14 +150,17 @@ export const createOrder = async (
     userOrder: UserOrder,
     options: CreateOrderOptions,
 ): Promise<SignedOrder> => {
-    const eoaSignerAddress = await getSignerAddress(eoaSigner);
-
-    // If funder address is not given, use the signer address
-    const maker = funderAddress === undefined ? eoaSignerAddress : funderAddress;
+    if (signatureType !== SignatureType.DEPOSIT_WALLET) {
+        throw new Error("Kuest order flow supports only Deposit Wallet signature type 3");
+    }
+    if (!funderAddress) {
+        throw new Error("Deposit Wallet funder address is required for Kuest orders");
+    }
+    const maker = funderAddress;
     const contractConfig = getContractConfig(chainId);
 
     const orderData = await buildOrderCreationArgs(
-        eoaSignerAddress,
+        maker,
         maker,
         signatureType,
         userOrder,
@@ -250,38 +234,17 @@ export const buildMarketOrderCreationArgs = async (
     const makerAmount = parseUnits(rawMakerAmt.toString(), COLLATERAL_TOKEN_DECIMALS).toString();
     const takerAmount = parseUnits(rawTakerAmt.toString(), COLLATERAL_TOKEN_DECIMALS).toString();
 
-    let taker;
-    if (typeof userMarketOrder.taker !== "undefined" && userMarketOrder.taker) {
-        taker = userMarketOrder.taker;
-    } else {
-        taker = "0x0000000000000000000000000000000000000000";
-    }
-
-    let feeRateBps;
-    if (typeof userMarketOrder.feeRateBps !== "undefined" && userMarketOrder.feeRateBps) {
-        feeRateBps = userMarketOrder.feeRateBps.toString();
-    } else {
-        feeRateBps = "0";
-    }
-
-    let nonce;
-    if (typeof userMarketOrder.nonce !== "undefined" && userMarketOrder.nonce) {
-        nonce = userMarketOrder.nonce.toString();
-    } else {
-        nonce = "0";
-    }
-
     return {
         maker,
-        taker,
         tokenId: userMarketOrder.tokenID,
         makerAmount,
         takerAmount,
         side,
-        feeRateBps,
-        nonce,
         signer,
         expiration: "0",
+        timestamp: Date.now().toString(),
+        metadata: userMarketOrder.metadata ?? ZERO_BYTES32,
+        builder: builderCodeToBytes32(userMarketOrder.builderCode),
         signatureType,
     } as OrderData;
 };
@@ -294,14 +257,17 @@ export const createMarketOrder = async (
     userMarketOrder: UserMarketOrder,
     options: CreateOrderOptions,
 ): Promise<SignedOrder> => {
-    const eoaSignerAddress = await getSignerAddress(eoaSigner);
-
-    // If funder address is not given, use the signer address
-    const maker = funderAddress === undefined ? eoaSignerAddress : funderAddress;
+    if (signatureType !== SignatureType.DEPOSIT_WALLET) {
+        throw new Error("Kuest order flow supports only Deposit Wallet signature type 3");
+    }
+    if (!funderAddress) {
+        throw new Error("Deposit Wallet funder address is required for Kuest orders");
+    }
+    const maker = funderAddress;
     const contractConfig = getContractConfig(chainId);
 
     const orderData = await buildMarketOrderCreationArgs(
-        eoaSignerAddress,
+        maker,
         maker,
         signatureType,
         userMarketOrder,

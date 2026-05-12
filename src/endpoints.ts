@@ -1,5 +1,6 @@
 // Server Time
 export const TIME = "/time";
+export const VERSION = "/version";
 
 // API Key endpoints
 export const CREATE_API_KEY = "/auth/api-key";
@@ -25,6 +26,7 @@ export const GET_SAMPLING_MARKETS = "/sampling-markets";
 export const GET_SIMPLIFIED_MARKETS = "/simplified-markets";
 export const GET_MARKETS = "/markets";
 export const GET_MARKET = "/markets/";
+export const GET_CLOB_MARKET = "/clob-markets/";
 export const GET_ORDER_BOOK = "/book";
 export const GET_ORDER_BOOKS = "/books";
 export const GET_MIDPOINT = "/midpoint";
@@ -37,7 +39,6 @@ export const GET_LAST_TRADE_PRICE = "/last-trade-price";
 export const GET_LAST_TRADES_PRICES = "/last-trades-prices";
 export const GET_TICK_SIZE = "/tick-size";
 export const GET_NEG_RISK = "/neg-risk";
-export const GET_FEE_RATE = "/fee-rate";
 
 // Order endpoints
 export const POST_ORDER = "/order";
@@ -76,6 +77,9 @@ export const GET_REWARDS_EARNINGS_PERCENTAGES = "/rewards/user/markets";
 
 // Builder endpoints
 export const GET_BUILDER_TRADES = "/builder/trades";
+
+// Fees
+export const GET_BUILDER_FEES = "/fees/builder-fees/";
 
 // Heartbeats
 export const POST_HEARTBEAT = "/v1/heartbeats";

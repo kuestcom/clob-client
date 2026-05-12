@@ -13,22 +13,26 @@ Typescript client for the Kuest CLOB
 // npm install ethers
 // Client initialization example and dumping API Keys
 
-import { ApiKeyCreds, ClobClient, OrderType, Side, } from "@kuestcom/clob-client";
+import { ApiKeyCreds, ClobClient, OrderType, Side, SignatureType } from "@kuestcom/clob-client";
 import { Wallet } from "@ethersproject/wallet";
 
 const host = 'https://clob.kuest.com';
-const funder = ''; // This is your Kuest Profile Address, where you send UDSC to. 
+const depositWallet = ''; // Deposit Wallet address that holds funds.
 const signer = new Wallet(""); // This is your Private Key.
 
 
 // In general don't create a new API key, always derive or createOrDerive
 const creds = new ClobClient(host, 80002, signer).createOrDeriveApiKey();
 
-//0: Browser Wallet(Metamask, Coinbase Wallet, etc)
-//1: Magic/Email Login
-const signatureType = 1; 
   (async () => {
-    const clobClient = new ClobClient(host, 80002, signer, await creds, signatureType, funder);
+    const clobClient = new ClobClient(
+        host,
+        80002,
+        signer,
+        await creds,
+        SignatureType.DEPOSIT_WALLET,
+        depositWallet,
+    );
     const resp2 = await clobClient.createAndPostOrder(
         {
             tokenID: "", //Use https://docs.kuest.com/developers/gamma-markets-api/get-markets to grab a sample token
@@ -76,10 +80,10 @@ const clobClient = new ClobClient(host, 80002, walletClient);
 By default, API errors are returned as `{ error: "...", status: ... }` objects. To have the client throw errors instead, pass `throwOnError: true` as the last constructor argument:
 
 ```ts
-import { ClobClient, ApiError } from "@kuestcom/clob-client";
+import { ClobClient, ApiError, SignatureType } from "@kuestcom/clob-client";
 
 const clobClient = new ClobClient(
-    host, 80002, signer, await creds, signatureType, funder,
+    host, 80002, signer, await creds, SignatureType.DEPOSIT_WALLET, depositWallet,
     undefined, // geoBlockToken
     undefined, // useServerTime
     undefined, // builderConfig

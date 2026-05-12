@@ -8,6 +8,7 @@ import {
     OrderType,
     type PostOrdersArgs,
     Side,
+    SignatureType,
 } from "../src/index.ts";
 
 dotenvConfig({ path: resolve(import.meta.dirname, "../.env") });
@@ -23,7 +24,11 @@ async function main() {
         secret: `${process.env.CLOB_SECRET}`,
         passphrase: `${process.env.CLOB_PASS_PHRASE}`,
     };
-    const clobClient = new ClobClient(host, chainId, wallet, creds);
+    const depositWallet = process.env.DEPOSIT_WALLET;
+    if (!depositWallet) {
+        throw new Error("DEPOSIT_WALLET is required for Deposit Wallet orders");
+    }
+    const clobClient = new ClobClient(host, chainId, wallet, creds, SignatureType.DEPOSIT_WALLET, depositWallet);
 
     await clobClient.cancelAll();
 

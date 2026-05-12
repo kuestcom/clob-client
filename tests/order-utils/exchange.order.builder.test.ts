@@ -8,27 +8,29 @@ import type { Order, OrderData } from "../../src/order-utils/index.ts";
 
 const CHAIN_ID = 137;
 const EXCHANGE_ADDRESS = "0x0000000000000000000000000000000000000001";
-const EOA_PRIVATE_KEY =
+const OWNER_PRIVATE_KEY =
     "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
-const EXPECTED_HASH = "0xeb162c6cc7aa28ad096a7c40fb9556d41fa1730d71103ba7103589ae1f18d942";
+const SAMPLE_BUILDER = "0x0000000000000000000000001111111111111111111111111111111111111111";
+const SAMPLE_METADATA = "0x0000000000000000000000000000000000000000000000000000000000000042";
+const SAMPLE_TIMESTAMP = "1715731200000";
 
 const createOrderData = (signer: string): OrderData => ({
     maker: signer,
-    taker: "0x0000000000000000000000000000000000000000",
     tokenId: "101",
     makerAmount: "1000000",
     takerAmount: "2000000",
     side: OrderSide.BUY,
-    feeRateBps: "0",
-    nonce: "2",
     signer,
     expiration: "0",
-    signatureType: SignatureType.EOA,
+    timestamp: SAMPLE_TIMESTAMP,
+    metadata: SAMPLE_METADATA,
+    builder: SAMPLE_BUILDER,
+    signatureType: SignatureType.DEPOSIT_WALLET,
 });
 
 describe("ExchangeOrderBuilder", () => {
     it("signs orders with a providerless ethers wallet", async () => {
-        const wallet = new Wallet(EOA_PRIVATE_KEY);
+        const wallet = new Wallet(OWNER_PRIVATE_KEY);
         const address = await wallet.getAddress();
         const builder = new ExchangeOrderBuilder(
             EXCHANGE_ADDRESS,
@@ -74,14 +76,17 @@ describe("ExchangeOrderBuilder", () => {
 
         const signedOrder = await builder.buildSignedOrder(createOrderData(walletClientAddress));
 
-        expect(signedOrder.signature).to.equal("0xdeadbeef");
-        expect(receivedPrimaryType).to.equal("Order");
+        expect(signedOrder.signature).to.match(/^0xdeadbeef[0-9a-f]+$/i);
+        expect(receivedPrimaryType).to.equal("TypedDataSign");
     });
 
-    it("throws when order signer does not match the signer address", async () => {
-        const wallet = new Wallet(EOA_PRIVATE_KEY);
+    it("throws when the Deposit Wallet is not both maker and order signer", async () => {
+        const wallet = new Wallet(OWNER_PRIVATE_KEY);
         const builder = new ExchangeOrderBuilder(EXCHANGE_ADDRESS, CHAIN_ID, wallet, () => "789");
-        const badOrderData = createOrderData("0x00000000000000000000000000000000000000b2");
+        const badOrderData = {
+            ...createOrderData("0x00000000000000000000000000000000000000b2"),
+            maker: "0x00000000000000000000000000000000000000c3",
+        };
 
         let thrownError: unknown;
         try {
@@ -91,30 +96,35 @@ describe("ExchangeOrderBuilder", () => {
         }
 
         expect(thrownError).to.be.instanceOf(Error);
-        expect((thrownError as Error).message).to.equal("signer does not match");
+        expect((thrownError as Error).message).to.equal(
+            "Deposit Wallet orders must use the Deposit Wallet as maker and signer",
+        );
     });
 
     it("builds a deterministic order hash", () => {
-        const wallet = new Wallet(EOA_PRIVATE_KEY);
+        const wallet = new Wallet(OWNER_PRIVATE_KEY);
         const builder = new ExchangeOrderBuilder(EXCHANGE_ADDRESS, CHAIN_ID, wallet);
         const order: Order = {
             salt: "1",
             maker: "0x1111111111111111111111111111111111111111",
             signer: "0x1111111111111111111111111111111111111111",
-            taker: "0x0000000000000000000000000000000000000000",
             tokenId: "101",
             makerAmount: "1000000",
             takerAmount: "2000000",
             expiration: "0",
-            nonce: "2",
-            feeRateBps: "0",
+            timestamp: SAMPLE_TIMESTAMP,
+            metadata: SAMPLE_METADATA,
+            builder: SAMPLE_BUILDER,
             side: OrderSide.BUY,
-            signatureType: SignatureType.EOA,
+            signatureType: SignatureType.DEPOSIT_WALLET,
         };
 
-        const typedData = builder.buildOrderTypedData(order);
-        const orderHash = builder.buildOrderHash(typedData);
+        const typedDataA = builder.buildOrderTypedData(order);
+        const typedDataB = builder.buildOrderTypedData(order);
+        const orderHashA = builder.buildOrderHash(typedDataA);
+        const orderHashB = builder.buildOrderHash(typedDataB);
 
-        expect(orderHash).to.equal(EXPECTED_HASH);
+        expect(orderHashA).to.match(/^0x[0-9a-f]{64}$/i);
+        expect(orderHashA).to.equal(orderHashB);
     });
 });

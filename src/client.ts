@@ -17,9 +17,10 @@ import {
     GET_API_KEYS,
     GET_BALANCE_ALLOWANCE,
     GET_BUILDER_API_KEYS,
+    GET_BUILDER_FEES,
     GET_BUILDER_TRADES,
+    GET_CLOB_MARKET,
     GET_EARNINGS_FOR_USER_FOR_DAY,
-    GET_FEE_RATE,
     GET_LAST_TRADE_PRICE,
     GET_LAST_TRADES_PRICES,
     GET_LIQUIDITY_REWARD_PERCENTAGES,
@@ -57,6 +58,7 @@ import {
     TIME,
     UPDATE_BALANCE_ALLOWANCE,
     VALIDATE_READONLY_API_KEY,
+    VERSION,
 } from "./endpoints.ts";
 import {
     ApiError,
@@ -83,6 +85,7 @@ import type { SignatureType, SignedOrder } from "./order-utils/index.ts";
 import { RfqClient } from "./rfq-client.ts";
 import type { IRfqClient, RfqDeps } from "./rfq-deps.ts";
 import type { ClobSigner } from "./signer.ts";
+import { GEOBLOCK_HOST, SITE_CONFIG } from "./site-config.ts";
 import type {
     ApiKeyCreds,
     ApiKeyRaw,
@@ -93,15 +96,17 @@ import type {
     BookParams,
     BuilderApiKey,
     BuilderApiKeyResponse,
+    BuilderFeeRates,
     BuilderTrade,
     Chain,
     CreateOrderOptions,
     DropNotificationParams,
-    FeeRates,
+    FeeInfos,
     HeartbeatResponse,
     L2HeaderArgs,
     L2KuestHeader,
     L2WithBuilderHeader,
+    MarketDetails,
     MarketPrice,
     MarketReward,
     MarketTradeEvent,
@@ -125,6 +130,7 @@ import type {
     RewardsPercentages,
     TickSize,
     TickSizes,
+    TokenConditionMap,
     TotalUserEarning,
     Trade,
     TradeParams,
@@ -135,12 +141,13 @@ import type {
 } from "./types.ts";
 import { OrderType, Side } from "./types.ts";
 import {
+    adjustBuyAmountForFees,
+    builderCodeToBytes32,
     generateOrderBookSummaryHash,
     isTickSizeSmaller,
     orderToJson,
     priceValid,
 } from "./utilities.ts";
-import { GEOBLOCK_HOST, SITE_CONFIG } from "./site-config.ts";
 
 export class ClobClient {
     readonly host: string;
@@ -159,7 +166,11 @@ export class ClobClient {
 
     readonly negRisk: NegRisk;
 
-    readonly feeRates: FeeRates;
+    readonly feeInfos: FeeInfos;
+
+    readonly builderFeeRates: BuilderFeeRates;
+
+    readonly tokenConditionMap: TokenConditionMap;
 
     readonly geoBlockToken?: string;
 
@@ -219,7 +230,9 @@ export class ClobClient {
         this.tickSizeTimestamps = {};
         this.tickSizeTtlMs = tickSizeTtlMs ?? 300_000;
         this.negRisk = {};
-        this.feeRates = {};
+        this.feeInfos = {};
+        this.builderFeeRates = {};
+        this.tokenConditionMap = {};
         this.geoBlockToken = geoBlockToken;
         this.useServerTime = useServerTime;
         this.retryOnError = retryOnError;
@@ -257,6 +270,11 @@ export class ClobClient {
         return this.get(`${this.host}${TIME}`);
     }
 
+    public async getVersion(): Promise<number> {
+        const response = await this.get(`${this.host}${VERSION}`);
+        return response?.version ?? 2;
+    }
+
     public async getSamplingSimplifiedMarkets(
         next_cursor = INITIAL_CURSOR,
     ): Promise<PaginationPayload> {
@@ -287,6 +305,51 @@ export class ClobClient {
         return this.get(`${this.host}${GET_MARKET}${conditionID}`);
     }
 
+    public async getClobMarketInfo(conditionID: string): Promise<MarketDetails> {
+        const result: MarketDetails = await this.get(
+            `${this.host}${GET_CLOB_MARKET}${conditionID}`,
+        );
+        const tokens = result.t ?? result.tokens;
+
+        if (!tokens) {
+            throw new Error(`failed to fetch market info for condition id ${conditionID}`);
+        }
+
+        const minTickSize = result.mts ?? result.min_tick_size;
+        const negRisk = result.nr ?? result.neg_risk ?? false;
+        const fd = result.fd ?? {};
+        const makerRateBps = Number(fd.maker_fee_rate_bps ?? fd.builder_maker_fee_rate_bps ?? 0);
+        const takerRateBps = Number(fd.taker_fee_rate_bps ?? fd.builder_taker_fee_rate_bps ?? 0);
+
+        for (const token of tokens) {
+            const tokenID = token?.t ?? token?.token_id;
+            if (!tokenID) {
+                continue;
+            }
+
+            this.tokenConditionMap[tokenID] = result.c ?? result.condition_id ?? conditionID;
+            if (minTickSize !== undefined) {
+                this.tickSizes[tokenID] = minTickSize.toString() as TickSize;
+                this.tickSizeTimestamps[tokenID] = Date.now();
+            }
+            this.negRisk[tokenID] = negRisk;
+            this.feeInfos[tokenID] = {
+                makerRateBps,
+                takerRateBps,
+                rate: Number(fd.r ?? 0),
+                exponent: Number(fd.e ?? 0),
+            };
+        }
+
+        return result;
+    }
+
+    public async getBuilderFeeRate(builderCode: string): Promise<{ maker: number; taker: number }> {
+        const normalizedBuilderCode = builderCodeToBytes32(builderCode);
+        await this.ensureBuilderFeeRateCached(normalizedBuilderCode);
+        return this.builderFeeRates[normalizedBuilderCode] ?? { maker: 0, taker: 0 };
+    }
+
     public async getOrderBook(tokenID: string): Promise<OrderBookSummary> {
         const result: OrderBookSummary = await this.get(`${this.host}${GET_ORDER_BOOK}`, {
             params: { token_id: tokenID },
@@ -310,6 +373,13 @@ export class ClobClient {
 
         if (tokenID in this.tickSizes && cachedAt && Date.now() - cachedAt < this.tickSizeTtlMs) {
             return this.tickSizes[tokenID];
+        }
+
+        if (tokenID in this.tokenConditionMap) {
+            await this.getClobMarketInfo(this.tokenConditionMap[tokenID]);
+            if (tokenID in this.tickSizes) {
+                return this.tickSizes[tokenID];
+            }
         }
 
         const result = await this.get(`${this.host}${GET_TICK_SIZE}`, {
@@ -345,6 +415,11 @@ export class ClobClient {
             return this.negRisk[tokenID];
         }
 
+        if (tokenID in this.tokenConditionMap) {
+            await this.getClobMarketInfo(this.tokenConditionMap[tokenID]);
+            return this.negRisk[tokenID];
+        }
+
         const result = await this.get(`${this.host}${GET_NEG_RISK}`, {
             params: { token_id: tokenID },
         });
@@ -354,22 +429,6 @@ export class ClobClient {
         this.negRisk[tokenID] = result.neg_risk as boolean;
 
         return this.negRisk[tokenID];
-    }
-
-    public async getFeeRateBps(tokenID: string): Promise<number> {
-        if (tokenID in this.feeRates) {
-            return this.feeRates[tokenID];
-        }
-
-        const result = await this.get(`${this.host}${GET_FEE_RATE}`, {
-            params: { token_id: tokenID },
-        });
-        if (result.error) {
-            throw new Error(result.error);
-        }
-        this.feeRates[tokenID] = result.base_fee as number;
-
-        return this.feeRates[tokenID];
     }
 
     /**
@@ -880,9 +939,6 @@ export class ClobClient {
 
         const tickSize = await this._resolveTickSize(tokenID, options?.tickSize);
 
-        const feeRateBps = await this._resolveFeeRateBps(tokenID, userOrder.feeRateBps);
-        userOrder.feeRateBps = feeRateBps;
-
         if (!priceValid(userOrder.price, tickSize)) {
             throw new Error(
                 `invalid price (${userOrder.price}), min: ${Number.parseFloat(tickSize)} - max: ${
@@ -909,9 +965,6 @@ export class ClobClient {
 
         const tickSize = await this._resolveTickSize(tokenID, options?.tickSize);
 
-        const feeRateBps = await this._resolveFeeRateBps(tokenID, userMarketOrder.feeRateBps);
-        userMarketOrder.feeRateBps = feeRateBps;
-
         if (!userMarketOrder.price) {
             userMarketOrder.price = await this.calculateMarketPrice(
                 tokenID,
@@ -929,9 +982,32 @@ export class ClobClient {
             );
         }
 
+        const orderToSign = { ...userMarketOrder };
+        orderToSign.builderCode = builderCodeToBytes32(orderToSign.builderCode);
+
+        if (orderToSign.side === Side.BUY && orderToSign.userUSDCBalance !== undefined) {
+            await this._ensureMarketInfoCached(tokenID);
+            await this.ensureBuilderFeeRateCached(orderToSign.builderCode);
+            const fees = this.feeInfos[tokenID] ?? {
+                makerRateBps: 0,
+                takerRateBps: 0,
+                rate: 0,
+                exponent: 0,
+            };
+            const builderTakerFeeRateBps =
+                this.builderFeeRates[orderToSign.builderCode]?.taker ?? 0;
+            orderToSign.amount = adjustBuyAmountForFees(
+                orderToSign.amount,
+                orderToSign.price ?? 0,
+                orderToSign.userUSDCBalance,
+                fees.takerRateBps,
+                builderTakerFeeRateBps,
+            );
+        }
+
         const negRisk = options?.negRisk ?? (await this.getNegRisk(tokenID));
 
-        return this.orderBuilder.buildMarketOrder(userMarketOrder, {
+        return this.orderBuilder.buildMarketOrder(orderToSign, {
             tickSize,
             negRisk,
         });
@@ -1480,6 +1556,40 @@ export class ClobClient {
         return this.del(`${this.host}${endpoint}`, { headers });
     }
 
+    private async _ensureMarketInfoCached(tokenID: string): Promise<void> {
+        if (tokenID in this.feeInfos) {
+            return;
+        }
+
+        let conditionID = this.tokenConditionMap[tokenID];
+        if (!conditionID) {
+            const book = await this.getOrderBook(tokenID);
+            conditionID = book?.market;
+            if (!conditionID) {
+                throw new Error(`failed to resolve condition id for token ${tokenID}`);
+            }
+            this.tokenConditionMap[tokenID] = conditionID;
+        }
+
+        await this.getClobMarketInfo(conditionID);
+    }
+
+    private async ensureBuilderFeeRateCached(builderCode?: string): Promise<void> {
+        const normalizedBuilderCode = builderCodeToBytes32(builderCode);
+        if (normalizedBuilderCode === builderCodeToBytes32()) {
+            return;
+        }
+        if (normalizedBuilderCode in this.builderFeeRates) {
+            return;
+        }
+
+        const result = await this.get(`${this.host}${GET_BUILDER_FEES}${normalizedBuilderCode}`);
+        this.builderFeeRates[normalizedBuilderCode] = {
+            maker: Number(result.builder_maker_fee_rate_bps ?? 0),
+            taker: Number(result.builder_taker_fee_rate_bps ?? 0),
+        };
+    }
+
     protected async _resolveTickSize(tokenID: string, tickSize?: TickSize): Promise<TickSize> {
         const minTickSize = await this.getTickSize(tokenID);
         if (tickSize) {
@@ -1567,20 +1677,6 @@ export class ClobClient {
 
     private canBuilderAuth(): boolean {
         return SITE_CONFIG.builder_mode && (this.builderConfig?.isValid() ?? false);
-    }
-
-    private async _resolveFeeRateBps(tokenID: string, userFeeRateBps?: number): Promise<number> {
-        const marketFeeRateBps = await this.getFeeRateBps(tokenID);
-        if (
-            marketFeeRateBps > 0 &&
-            userFeeRateBps !== undefined &&
-            userFeeRateBps !== marketFeeRateBps
-        ) {
-            throw new Error(
-                `invalid user provided fee rate: ${userFeeRateBps}, fee rate for the market must be ${marketFeeRateBps}`,
-            );
-        }
-        return marketFeeRateBps;
     }
 
     private async _generateBuilderHeaders(

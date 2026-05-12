@@ -14,7 +14,7 @@ export interface EIP712Parameter {
     type: string;
 }
 
-export type EIP712ObjectValue = string | number | EIP712Object;
+export type EIP712ObjectValue = string | number | EIP712Object | undefined;
 
 export interface EIP712Object {
     [key: string]: EIP712ObjectValue;
