@@ -1,7 +1,7 @@
 {
     "name": "@kuestcom/clob-client",
     "description": "Typescript client for Kuest's CLOB",
-    "version": "2.0.0",
+    "version": "6.0.0",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/kuestcom/clob-client.git"
@@ -65,7 +65,7 @@
         "deploy": "pnpm build && npm publish --access public --provenance"
     },
     "dependencies": {
-        "@kuestcom/builder-signing-sdk": "^1.0.0",
+        "@kuestcom/builder-signing-sdk": "^2.0.0",
         "axios": "1.14.0",
         "browser-or-node": "^2.1.1",
         "viem": "^2.46.3"
