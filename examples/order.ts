@@ -2,19 +2,20 @@
 //npm install ethers
 //Client initialization example and dumping API Keys
 
-import { ClobClient, OrderType, Side, SignatureType } from "../src/index.ts";
+import { Chain, ClobClient, OrderType, Side, SignatureType } from "../src/index.ts";
 import { Wallet } from "@ethersproject/wallet";
 
 const host = "https://clob.kuest.com";
-const funder = ""; //This is your Deposit Wallet address that holds funds.
-const signer = new Wallet(""); //This is your Private Key. If using email login export from https://reveal.magic.link/kuest otherwise export from your Web3 Application
+const chainId = parseInt(`${process.env.CHAIN_ID || Chain.POLYGON}`) as Chain;
+const funder = process.env.DEPOSIT_WALLET || ""; // Deposit Wallet address that holds funds.
+const signer = new Wallet(process.env.PK || ""); // Private key for the owner wallet.
 
 //In general don't create a new API key, always derive or createOrDerive
-const creds = new ClobClient(host, 80002, signer).createOrDeriveApiKey();
+const creds = new ClobClient(host, chainId, signer).createOrDeriveApiKey();
 
 const signatureType = SignatureType.DEPOSIT_WALLET;
 (async () => {
-    const clobClient = new ClobClient(host, 80002, signer, await creds, signatureType, funder);
+    const clobClient = new ClobClient(host, chainId, signer, await creds, signatureType, funder);
     const resp2 = await clobClient.createAndPostOrder(
         {
             tokenID: "", //Use https://docs.kuest.com/developers/gamma-markets-api/get-markets to grab a sample token

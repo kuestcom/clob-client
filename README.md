@@ -9,6 +9,8 @@
 
 Typescript client for the Kuest CLOB
 
+This SDK uses V2 Deposit Wallet orders only. If this repo is downloaded through a fork's SDK download page, `src/site-config.ts` is preconfigured with that fork's builder code and every order created by the SDK includes it automatically.
+
 ### Usage
 
 ```ts
@@ -20,17 +22,18 @@ import { ApiKeyCreds, ClobClient, OrderType, Side, SignatureType } from "@kuestc
 import { Wallet } from "@ethersproject/wallet";
 
 const host = 'https://clob.kuest.com';
+const chainId = 137;
 const depositWallet = ''; // Deposit Wallet address that holds funds.
 const signer = new Wallet(""); // This is your Private Key.
 
 
 // In general don't create a new API key, always derive or createOrDerive
-const creds = new ClobClient(host, 80002, signer).createOrDeriveApiKey();
+const creds = new ClobClient(host, chainId, signer).createOrDeriveApiKey();
 
   (async () => {
     const clobClient = new ClobClient(
         host,
-        80002,
+        chainId,
         signer,
         await creds,
         SignatureType.DEPOSIT_WALLET,
@@ -56,8 +59,8 @@ See [examples](examples/) for more information
 
 ### Builder signing
 
-Builder signing: controlled by `src/site-config.ts`.
-Set `builder_mode` to `true` there to enable builder headers for this SDK build.
+Builder API key signing is controlled by `src/site-config.ts`.
+Set `builder_mode` to `true` only when this SDK build should use builder-auth headers. Fee attribution for fork SDKs is controlled by `builder_code` in `src/site-config.ts` and does not require `builder_mode`.
 
 ### Using viem WalletClient
 

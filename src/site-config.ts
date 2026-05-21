@@ -1,31 +1,31 @@
+const ZERO_BYTES32 = "0x0000000000000000000000000000000000000000000000000000000000000000";
+
 export interface SiteConfig {
     site_url: string;
-    fee_bps: number;
-    fee_receiver: string;
     builder_mode: boolean;
     geoblock: boolean;
+    builder_code: string;
+    order_metadata: string;
 }
 
 export const SITE_CONFIG: SiteConfig = {
     site_url: "",
-    fee_bps: 0,
-    fee_receiver: "",
     builder_mode: false,
     geoblock: false,
+    builder_code: "",
+    order_metadata: ZERO_BYTES32,
 };
 
 export const GEOBLOCK_HOST = "https://geoblock.kuest.com";
 
-export const getSiteOrderPayload = (): {
-    fee_bps?: number;
-    fee_receiver?: string;
+export const getSiteOrderContext = (): {
+    builderCode?: string;
+    metadata?: string;
 } => {
-    if (!SITE_CONFIG.fee_receiver.trim()) {
-        return {};
-    }
-
+    const builderCode = SITE_CONFIG.builder_code.trim();
+    const metadata = SITE_CONFIG.order_metadata.trim();
     return {
-        fee_bps: SITE_CONFIG.fee_bps,
-        fee_receiver: SITE_CONFIG.fee_receiver,
+        ...(builderCode ? { builderCode } : {}),
+        ...(metadata && metadata !== ZERO_BYTES32 ? { metadata } : {}),
     };
 };
