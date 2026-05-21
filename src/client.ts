@@ -85,7 +85,7 @@ import type { SignatureType, SignedOrder } from "./order-utils/index.ts";
 import { RfqClient } from "./rfq-client.ts";
 import type { IRfqClient, RfqDeps } from "./rfq-deps.ts";
 import type { ClobSigner } from "./signer.ts";
-import { GEOBLOCK_HOST, SITE_CONFIG } from "./site-config.ts";
+import { GEOBLOCK_HOST, SITE_CONFIG, getSiteOrderContext } from "./site-config.ts";
 import type {
     ApiKeyCreds,
     ApiKeyRaw,
@@ -148,6 +148,13 @@ import {
     orderToJson,
     priceValid,
 } from "./utilities.ts";
+
+function applySiteOrderContext<T extends UserOrder | UserMarketOrder>(order: T): T {
+    return {
+        ...order,
+        ...getSiteOrderContext(),
+    };
+}
 
 export class ClobClient {
     readonly host: string;
@@ -935,13 +942,14 @@ export class ClobClient {
     ): Promise<SignedOrder> {
         this.canL1Auth();
 
-        const { tokenID } = userOrder;
+        const orderToSign = applySiteOrderContext(userOrder);
+        const { tokenID } = orderToSign;
 
         const tickSize = await this._resolveTickSize(tokenID, options?.tickSize);
 
-        if (!priceValid(userOrder.price, tickSize)) {
+        if (!priceValid(orderToSign.price, tickSize)) {
             throw new Error(
-                `invalid price (${userOrder.price}), min: ${Number.parseFloat(tickSize)} - max: ${
+                `invalid price (${orderToSign.price}), min: ${Number.parseFloat(tickSize)} - max: ${
                     1 - Number.parseFloat(tickSize)
                 }`,
             );
@@ -949,7 +957,7 @@ export class ClobClient {
 
         const negRisk = options?.negRisk ?? (await this.getNegRisk(tokenID));
 
-        return this.orderBuilder.buildOrder(userOrder, {
+        return this.orderBuilder.buildOrder(orderToSign, {
             tickSize,
             negRisk,
         });
@@ -961,28 +969,28 @@ export class ClobClient {
     ): Promise<SignedOrder> {
         this.canL1Auth();
 
-        const { tokenID } = userMarketOrder;
+        const orderToSign = applySiteOrderContext(userMarketOrder);
+        const { tokenID } = orderToSign;
 
         const tickSize = await this._resolveTickSize(tokenID, options?.tickSize);
 
-        if (!userMarketOrder.price) {
-            userMarketOrder.price = await this.calculateMarketPrice(
+        if (!orderToSign.price) {
+            orderToSign.price = await this.calculateMarketPrice(
                 tokenID,
-                userMarketOrder.side,
-                userMarketOrder.amount,
-                userMarketOrder.orderType,
+                orderToSign.side,
+                orderToSign.amount,
+                orderToSign.orderType,
             );
         }
 
-        if (!priceValid(userMarketOrder.price, tickSize)) {
+        if (!priceValid(orderToSign.price, tickSize)) {
             throw new Error(
-                `invalid price (${userMarketOrder.price}), min: ${Number.parseFloat(tickSize)} - max: ${
+                `invalid price (${orderToSign.price}), min: ${Number.parseFloat(tickSize)} - max: ${
                     1 - Number.parseFloat(tickSize)
                 }`,
             );
         }
 
-        const orderToSign = { ...userMarketOrder };
         orderToSign.builderCode = builderCodeToBytes32(orderToSign.builderCode);
 
         if (orderToSign.side === Side.BUY && orderToSign.userUSDCBalance !== undefined) {

@@ -54,11 +54,6 @@ const creds = new ClobClient(host, 80002, signer).createOrDeriveApiKey();
 
 See [examples](examples/) for more information
 
-### Builder signing
-
-Builder signing: controlled by `src/site-config.ts`.
-Set `builder_mode` to `true` there to enable builder headers for this SDK build.
-
 ### Using viem WalletClient
 
 ```ts

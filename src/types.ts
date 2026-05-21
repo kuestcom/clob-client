@@ -86,8 +86,6 @@ export interface NewOrder<T extends OrderType> {
     readonly owner: string;
     readonly orderType: T;
     readonly deferExec: boolean;
-    readonly fee_bps?: number;
-    readonly fee_receiver?: string;
     readonly postOnly?: boolean;
 }
 
