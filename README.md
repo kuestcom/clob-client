@@ -1,4 +1,7 @@
-# Kuest CLOB Client
+<h1 align="center">
+  <img src="https://github.com/user-attachments/assets/0cc687fb-89c4-43fa-a056-d89c307215ad" alt="Kuest" height="96" /><br/>
+  Kuest Typescript CLOB Client
+</h1>
 
 <a href='https://www.npmjs.com/package/@kuestcom/clob-client'>
     <img src='https://img.shields.io/npm/v/@kuestcom/clob-client.svg' alt='NPM'/>
