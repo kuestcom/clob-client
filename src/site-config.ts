@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -41,15 +41,16 @@ const readBoolean = (value: unknown, field: keyof SiteConfig): boolean => {
 };
 
 const loadSiteConfigFrom = (configPath: string): SiteConfig | null => {
-    if (!existsSync(configPath)) {
-        return null;
-    }
-
     let parsed: unknown;
     try {
         parsed = JSON.parse(readFileSync(configPath, "utf8"));
     } catch (error) {
-        if (error instanceof Error && "code" in error) {
+        if (
+            error &&
+            typeof error === "object" &&
+            "code" in error &&
+            error.code === "ENOENT"
+        ) {
             return null;
         }
         throw new Error(`Invalid ${configPath}: ${String(error)}`);
