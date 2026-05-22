@@ -40,20 +40,18 @@ const readBoolean = (value: unknown, field: keyof SiteConfig): boolean => {
     return value;
 };
 
-const loadSiteConfig = (): SiteConfig => {
-    const configPath = resolve(
-        dirname(fileURLToPath(import.meta.url)),
-        "../.sdk/site-config.json",
-    );
-
+const loadSiteConfigFrom = (configPath: string): SiteConfig | null => {
     if (!existsSync(configPath)) {
-        return { ...DEFAULT_SITE_CONFIG };
+        return null;
     }
 
     let parsed: unknown;
     try {
         parsed = JSON.parse(readFileSync(configPath, "utf8"));
     } catch (error) {
+        if (error instanceof Error && "code" in error) {
+            return null;
+        }
         throw new Error(`Invalid ${configPath}: ${String(error)}`);
     }
 
@@ -70,6 +68,22 @@ const loadSiteConfig = (): SiteConfig => {
         builder_code: readString(config.builder_code, "builder_code"),
         order_metadata: readString(config.order_metadata, "order_metadata"),
     };
+};
+
+const loadSiteConfig = (): SiteConfig => {
+    const candidatePaths = [
+        resolve(process.cwd(), ".sdk/site-config.json"),
+        resolve(dirname(fileURLToPath(import.meta.url)), "../.sdk/site-config.json"),
+    ];
+
+    for (const configPath of candidatePaths) {
+        const config = loadSiteConfigFrom(configPath);
+        if (config) {
+            return config;
+        }
+    }
+
+    return { ...DEFAULT_SITE_CONFIG };
 };
 
 export const SITE_CONFIG: SiteConfig = loadSiteConfig();
