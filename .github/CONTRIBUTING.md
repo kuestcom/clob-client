@@ -6,7 +6,7 @@ Contributions to `@kuestcom/clob-client` are welcome. This document outlines the
 
 1. Fork `kuestcom/clob-client`.
 2. Clone your fork.
-3. Use Node.js 24 when possible. The package supports Node.js `>=20.10`, and CI runs on Node.js 24.
+3. Use Node.js 24 when possible. The package supports Node.js `>=22.22.1`, and CI runs on Node.js 24.
 4. Enable Corepack if needed, then install dependencies with pnpm:
 
 ```sh

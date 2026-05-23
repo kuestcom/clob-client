@@ -4,7 +4,7 @@
 </h1>
 
 [![NPM](https://img.shields.io/npm/v/@kuestcom/clob-client.svg)](https://www.npmjs.com/package/@kuestcom/clob-client)
-[![PR](https://github.com/kuestcom/rs-clob-client/actions/workflows/pr.yml/badge.svg)](https://github.com/kuestcom/rs-clob-client/actions/workflows/pr.yml)
+[![PR](https://github.com/kuestcom/clob-client/actions/workflows/pr.yml/badge.svg)](https://github.com/kuestcom/clob-client/actions/workflows/pr.yml)
 
 ### Usage
 
