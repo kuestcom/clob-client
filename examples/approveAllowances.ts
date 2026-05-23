@@ -17,7 +17,7 @@ export function getWallet(mainnetQ: boolean): ethers.Wallet {
     } else {
         rpcUrl = `https://polygon-amoy.g.alchemy.com/v2/${rpcToken}`;
     }
-    const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
     let wallet = new ethers.Wallet(pk);
     wallet = wallet.connect(provider);
     return wallet;
