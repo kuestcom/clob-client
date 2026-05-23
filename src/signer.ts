@@ -4,7 +4,7 @@ type TypedDataDomain = Record<string, unknown>;
 type TypedDataTypes = Record<string, Array<{ name: string; type: string }>>;
 type TypedDataValue = Record<string, unknown>;
 
-interface EthersSigner {
+interface EthersV5Signer {
     _signTypedData(
         domain: TypedDataDomain,
         types: TypedDataTypes,
@@ -13,14 +13,34 @@ interface EthersSigner {
     getAddress(): Promise<string>;
 }
 
+interface EthersV6Signer {
+    signTypedData(
+        domain: TypedDataDomain,
+        types: TypedDataTypes,
+        value: TypedDataValue,
+    ): Promise<string>;
+    getAddress(): Promise<string>;
+}
+
+type EthersSigner = EthersV5Signer | EthersV6Signer;
+
+const hasFunction = (value: unknown, key: string): boolean =>
+    typeof (value as Record<string, unknown>)[key] === "function";
+
 export type ClobSigner = EthersSigner | WalletClient;
 
 const isEthersTypedDataSigner = (signer: ClobSigner): signer is EthersSigner =>
     // eslint-disable-next-line no-underscore-dangle
-    typeof (signer as EthersSigner)._signTypedData === "function";
+    hasFunction(signer, "_signTypedData") ||
+    (hasFunction(signer, "signTypedData") &&
+        hasFunction(signer, "getAddress") &&
+        !isWalletClientSigner(signer));
 
 const isWalletClientSigner = (signer: ClobSigner): signer is WalletClient =>
-    typeof (signer as WalletClient).signTypedData === "function";
+    hasFunction(signer, "signTypedData") &&
+    (typeof (signer as WalletClient).account !== "undefined" ||
+        hasFunction(signer, "requestAddresses") ||
+        hasFunction(signer, "getAddresses"));
 
 export const getWalletClientAddress = async (walletClient: WalletClient): Promise<Address> => {
     const accountAddress = walletClient.account?.address;
@@ -71,8 +91,12 @@ export const signTypedDataWithSigner = async ({
     primaryType?: string;
 }): Promise<string> => {
     if (isEthersTypedDataSigner(signer)) {
-        // eslint-disable-next-line no-underscore-dangle
-        return signer._signTypedData(domain, types, value);
+        if ("_signTypedData" in signer) {
+            // eslint-disable-next-line no-underscore-dangle
+            return signer._signTypedData(domain, types, value);
+        }
+
+        return signer.signTypedData(domain, types, value);
     }
 
     if (isWalletClientSigner(signer)) {

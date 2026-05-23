@@ -85,7 +85,7 @@ import type { SignatureType, SignedOrder } from "./order-utils/index.ts";
 import { RfqClient } from "./rfq-client.ts";
 import type { IRfqClient, RfqDeps } from "./rfq-deps.ts";
 import type { ClobSigner } from "./signer.ts";
-import { GEOBLOCK_HOST, SITE_CONFIG, getSiteOrderContext } from "./site-config.ts";
+import { GEOBLOCK_HOST, getSiteOrderContext, SITE_CONFIG } from "./site-config.ts";
 import type {
     ApiKeyCreds,
     ApiKeyRaw,

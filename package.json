@@ -66,20 +66,20 @@
     },
     "dependencies": {
         "@kuestcom/builder-signing-sdk": "^2.0.0",
-        "axios": "1.14.0",
-        "browser-or-node": "^2.1.1",
-        "viem": "^2.46.3"
+        "axios": "1.16.1",
+        "browser-or-node": "3.0.0",
+        "viem": "2.50.4"
     },
     "devDependencies": {
-        "@biomejs/biome": "^2.4.5",
+        "@biomejs/biome": "^2.4.15",
         "@ethersproject/wallet": "^5.8.0",
-        "@types/node": "^22.19.1",
-        "@types/ws": "^8.5.3",
-        "@vitest/coverage-v8": "^4.0.18",
-        "dotenv": "^17.3.1",
-        "ethers": "^5.8.0",
-        "typescript": "^6.0.0",
-        "vitest": "^4.0.18",
-        "ws": "^8.11.0"
+        "@types/node": "^25.9.1",
+        "@types/ws": "^8.18.1",
+        "@vitest/coverage-v8": "^4.1.7",
+        "dotenv": "^17.4.2",
+        "ethers": "^6.16.0",
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.7",
+        "ws": "^8.21.0"
     }
 }
