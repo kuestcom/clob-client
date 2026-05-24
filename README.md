@@ -3,11 +3,8 @@
   Kuest Typescript CLOB Client
 </h1>
 
-<a href='https://www.npmjs.com/package/@kuestcom/clob-client'>
-    <img src='https://img.shields.io/npm/v/@kuestcom/clob-client.svg' alt='NPM'/>
-</a>
-
-Typescript client for the Kuest CLOB
+[![NPM](https://img.shields.io/npm/v/@kuestcom/clob-client.svg)](https://www.npmjs.com/package/@kuestcom/clob-client)
+[![PR](https://github.com/kuestcom/clob-client/actions/workflows/pr.yml/badge.svg)](https://github.com/kuestcom/clob-client/actions/workflows/pr.yml)
 
 ### Usage
 

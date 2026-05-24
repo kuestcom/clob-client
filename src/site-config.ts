@@ -45,12 +45,7 @@ const loadSiteConfigFrom = (configPath: string): SiteConfig | null => {
     try {
         parsed = JSON.parse(readFileSync(configPath, "utf8"));
     } catch (error) {
-        if (
-            error &&
-            typeof error === "object" &&
-            "code" in error &&
-            error.code === "ENOENT"
-        ) {
+        if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
             return null;
         }
         throw new Error(`Invalid ${configPath}: ${String(error)}`);
