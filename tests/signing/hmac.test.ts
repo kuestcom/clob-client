@@ -46,4 +46,23 @@ describe("hmac", () => {
         expect(signature).not.empty;
         expect(signature).equal("ZwAdJKvoYRlEKDkNMwd5BuwNNtg93kNaR_oU2HrfVvc=");
     });
+
+    it("buildKuestHmacSignature excludes query parameters from the signing path", async () => {
+        const pathSignature = await buildKuestHmacSignature(
+            "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+            1000000,
+            "test-sign",
+            "/orders",
+            '{"hash": "0x123"}',
+        );
+        const querySignature = await buildKuestHmacSignature(
+            "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+            1000000,
+            "test-sign",
+            "/orders?market=condition",
+            '{"hash": "0x123"}',
+        );
+
+        expect(querySignature).equal(pathSignature);
+    });
 });
