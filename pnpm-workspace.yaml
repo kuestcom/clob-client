@@ -1,6 +1,6 @@
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
-  - "@kuestcom/builder-signing-sdk@2.0.1"
+  - "@kuestcom/builder-signing-sdk@2.0.2"
 shellEmulator: true
 allowBuilds:
   esbuild: true
