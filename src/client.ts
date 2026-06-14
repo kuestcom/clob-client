@@ -86,6 +86,11 @@ import { RfqClient } from "./rfq-client.ts";
 import type { IRfqClient, RfqDeps } from "./rfq-deps.ts";
 import type { ClobSigner } from "./signer.ts";
 import { GEOBLOCK_HOST, getSiteOrderContext, SITE_CONFIG } from "./site-config.ts";
+import {
+    filterSiteScopedMarkets,
+    getSiteMarketScope,
+    hasConfiguredSiteScope,
+} from "./site-scope.ts";
 import type {
     ApiKeyCreds,
     ApiKeyRaw,
@@ -285,27 +290,19 @@ export class ClobClient {
     public async getSamplingSimplifiedMarkets(
         next_cursor = INITIAL_CURSOR,
     ): Promise<PaginationPayload> {
-        return this.get(`${this.host}${GET_SAMPLING_SIMPLIFIED_MARKETS}`, {
-            params: { next_cursor },
-        });
+        return this._getSiteScopedMarketPage(GET_SAMPLING_SIMPLIFIED_MARKETS, next_cursor);
     }
 
     public async getSamplingMarkets(next_cursor = INITIAL_CURSOR): Promise<PaginationPayload> {
-        return this.get(`${this.host}${GET_SAMPLING_MARKETS}`, {
-            params: { next_cursor },
-        });
+        return this._getSiteScopedMarketPage(GET_SAMPLING_MARKETS, next_cursor);
     }
 
     public async getSimplifiedMarkets(next_cursor = INITIAL_CURSOR): Promise<PaginationPayload> {
-        return this.get(`${this.host}${GET_SIMPLIFIED_MARKETS}`, {
-            params: { next_cursor },
-        });
+        return this._getSiteScopedMarketPage(GET_SIMPLIFIED_MARKETS, next_cursor);
     }
 
     public async getMarkets(next_cursor = INITIAL_CURSOR): Promise<PaginationPayload> {
-        return this.get(`${this.host}${GET_MARKETS}`, {
-            params: { next_cursor },
-        });
+        return this._getSiteScopedMarketPage(GET_MARKETS, next_cursor);
     }
 
     public async getMarket(conditionID: string): Promise<any> {
@@ -1580,6 +1577,36 @@ export class ClobClient {
         }
 
         await this.getClobMarketInfo(conditionID);
+    }
+
+    private async _getSiteScopedMarketPage(
+        endpoint: string,
+        next_cursor = INITIAL_CURSOR,
+    ): Promise<PaginationPayload> {
+        if (!hasConfiguredSiteScope()) {
+            return this.get(`${this.host}${endpoint}`, {
+                params: { next_cursor },
+            });
+        }
+
+        let cursor = next_cursor;
+        while (true) {
+            const response = await this.get(`${this.host}${endpoint}`, {
+                params: { next_cursor: cursor },
+            });
+            const data = Array.isArray(response?.data) ? response.data : [];
+            const scope = await getSiteMarketScope();
+            const filtered = filterSiteScopedMarkets(data, scope);
+            const scopedResponse = { ...response, data: filtered };
+            const responseCursor =
+                typeof response?.next_cursor === "string" ? response.next_cursor : END_CURSOR;
+
+            if (filtered.length > 0 || responseCursor === END_CURSOR || responseCursor === cursor) {
+                return scopedResponse;
+            }
+
+            cursor = responseCursor;
+        }
     }
 
     private async ensureBuilderFeeRateCached(builderCode?: string): Promise<void> {
