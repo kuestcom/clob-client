@@ -76,13 +76,13 @@
         "@ethersproject/wallet": "^5.8.0",
         "@types/node": "^24.12.4",
         "@types/ws": "^8.18.1",
-        "@vitest/coverage-v8": "^4.1.7",
+        "@vitest/coverage-v8": "^4.1.8",
         "dotenv": "^17.4.2",
         "ethers": "^6.16.0",
         "husky": "^9.1.7",
         "lint-staged": "^17.0.2",
         "typescript": "^6.0.3",
-        "vitest": "^4.1.7",
+        "vitest": "^4.1.8",
         "ws": "^8.21.0"
     },
     "lint-staged": {
