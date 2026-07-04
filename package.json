@@ -74,7 +74,7 @@
     "devDependencies": {
         "@biomejs/biome": "^2.4.15",
         "@ethersproject/wallet": "^5.8.0",
-        "@types/node": "^24.12.4",
+        "@types/node": "^26.0.0",
         "@types/ws": "^8.18.1",
         "@vitest/coverage-v8": "^4.1.8",
         "dotenv": "^17.4.2",
