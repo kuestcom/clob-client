@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { ZERO_BYTES32 } from "../src/order-utils/exchange.order.const.ts";
-import { SignatureType, Side as OrderSide } from "../src/order-utils/index.ts";
+import { Side as OrderSide, SignatureType } from "../src/order-utils/index.ts";
 import { OrderType } from "../src/types.ts";
-import { orderToJson } from "../src/utilities.ts";
+import { MIN_GTD_EXPIRATION_SECONDS, orderToJson } from "../src/utilities.ts";
 
 const signedOrder = {
     salt: "1",
@@ -41,5 +41,33 @@ describe("orderToJson", () => {
                 OrderType.GTC,
             ),
         ).toThrow("Deposit Wallet signature type 3");
+    });
+
+    it("rejects GTD orders below the minimum expiration", () => {
+        expect(() =>
+            orderToJson(
+                {
+                    ...signedOrder,
+                    expiration: `${Math.floor(Date.now() / 1000) + 60}`,
+                },
+                "owner-key",
+                OrderType.GTD,
+            ),
+        ).toThrow("GTD expiration must be at least 3 minutes in the future");
+    });
+
+    it("serializes GTD orders at or above the minimum expiration", () => {
+        const expiration = Math.floor(Date.now() / 1000) + MIN_GTD_EXPIRATION_SECONDS + 1;
+
+        const payload = orderToJson(
+            {
+                ...signedOrder,
+                expiration: `${expiration}`,
+            },
+            "owner-key",
+            OrderType.GTD,
+        );
+
+        expect(payload.order.expiration).to.equal(`${expiration}`);
     });
 });

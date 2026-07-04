@@ -4,6 +4,8 @@ import { SignatureType, Side as UtilsSide } from "./order-utils/index.ts";
 import type { NewOrder, OrderBookSummary, TickSize } from "./types.ts";
 import { OrderType, Side } from "./types.ts";
 
+export const MIN_GTD_EXPIRATION_SECONDS = 3 * 60;
+
 export function orderToJson<T extends OrderType>(
     order: SignedOrder,
     owner: string,
@@ -18,6 +20,8 @@ export function orderToJson<T extends OrderType>(
     if (postOnly === true && orderType !== OrderType.GTC && orderType !== OrderType.GTD) {
         throw new Error("postOnly is only supported for GTC and GTD orders");
     }
+
+    validateGtdExpiration(order, orderType);
 
     let side = Side.BUY;
     if (order.side === UtilsSide.BUY) {
@@ -51,6 +55,22 @@ export function orderToJson<T extends OrderType>(
         orderType,
         ...(typeof postOnly === "boolean" ? { postOnly } : {}),
     } as NewOrder<T>;
+}
+
+function validateGtdExpiration(order: SignedOrder, orderType: OrderType) {
+    if (orderType !== OrderType.GTD) {
+        return;
+    }
+
+    const expiration = Number(order.expiration);
+    if (!Number.isInteger(expiration)) {
+        throw new Error("GTD expiration must be a Unix timestamp in seconds");
+    }
+
+    const minimumExpiration = Math.floor(Date.now() / 1000) + MIN_GTD_EXPIRATION_SECONDS;
+    if (expiration < minimumExpiration) {
+        throw new Error("GTD expiration must be at least 3 minutes in the future");
+    }
 }
 
 export const roundNormal = (num: number, decimals: number): number => {
