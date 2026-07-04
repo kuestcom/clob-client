@@ -36,7 +36,7 @@ async function main() {
         depositWallet,
     );
 
-    // Create a buy order for 100 YES for 0.50c with an expiration of 3 minutes.
+    // Create a sell order for 100 YES for 0.50c with an expiration of 3 minutes.
     const YES = "71321045679252212594626385532706912750332728571942532289631379312455583992563";
     const threeMinutes = Math.floor(Date.now() / 1000) + 3 * 60 + 10;
 

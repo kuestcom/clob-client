@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { ZERO_BYTES32 } from "../src/order-utils/exchange.order.const.ts";
 import { Side as OrderSide, SignatureType } from "../src/order-utils/index.ts";
 import { OrderType } from "../src/types.ts";
@@ -56,7 +56,28 @@ describe("orderToJson", () => {
         ).toThrow("GTD expiration must be at least 3 minutes in the future");
     });
 
-    it("serializes GTD orders at or above the minimum expiration", () => {
+    it("serializes GTD orders at the minimum expiration", () => {
+        const now = 1_715_731_200_000;
+        vi.spyOn(Date, "now").mockReturnValue(now);
+        const expiration = Math.floor(now / 1000) + MIN_GTD_EXPIRATION_SECONDS;
+
+        try {
+            const payload = orderToJson(
+                {
+                    ...signedOrder,
+                    expiration: `${expiration}`,
+                },
+                "owner-key",
+                OrderType.GTD,
+            );
+
+            expect(payload.order.expiration).to.equal(`${expiration}`);
+        } finally {
+            vi.restoreAllMocks();
+        }
+    });
+
+    it("serializes GTD orders above the minimum expiration", () => {
         const expiration = Math.floor(Date.now() / 1000) + MIN_GTD_EXPIRATION_SECONDS + 1;
 
         const payload = orderToJson(
