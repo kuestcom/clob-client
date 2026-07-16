@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { ZERO_BYTES32 } from "../src/order-utils/exchange.order.const.ts";
 import { Side as OrderSide, SignatureType } from "../src/order-utils/index.ts";
 import { OrderType } from "../src/types.ts";
-import { MIN_GTD_EXPIRATION_SECONDS, orderToJson } from "../src/utilities.ts";
+import { MIN_GTD_EXPIRATION_SECONDS, normalizeNextCursor, orderToJson } from "../src/utilities.ts";
 
 const signedOrder = {
     salt: "1",
@@ -90,5 +90,21 @@ describe("orderToJson", () => {
         );
 
         expect(payload.order.expiration).to.equal(`${expiration}`);
+    });
+});
+
+describe("normalizeNextCursor", () => {
+    it("normalizes missing and empty cursors to the end cursor", () => {
+        expect(normalizeNextCursor(undefined)).to.equal("LTE=");
+        expect(normalizeNextCursor("")).to.equal("LTE=");
+        expect(normalizeNextCursor("   ")).to.equal("LTE=");
+    });
+
+    it("stops pagination when the server repeats the current cursor", () => {
+        expect(normalizeNextCursor("MA==", "MA==")).to.equal("LTE=");
+    });
+
+    it("preserves a new non-empty cursor", () => {
+        expect(normalizeNextCursor("MTAw", "MA==")).to.equal("MTAw");
     });
 });

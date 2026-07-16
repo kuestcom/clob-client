@@ -1,7 +1,7 @@
 {
     "name": "@kuestcom/clob-client",
     "description": "Typescript client for Kuest's CLOB",
-    "version": "6.0.8",
+    "version": "6.0.9",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/kuestcom/clob-client.git"

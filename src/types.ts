@@ -389,7 +389,7 @@ export interface BalanceAllowanceParams {
 
 export interface BalanceAllowanceResponse {
     balance: string;
-    allowance: string;
+    allowances: Record<string, string>;
 }
 
 export interface OrderScoringParams {

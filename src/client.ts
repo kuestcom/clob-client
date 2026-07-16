@@ -150,6 +150,7 @@ import {
     builderCodeToBytes32,
     generateOrderBookSummaryHash,
     isTickSizeSmaller,
+    normalizeNextCursor,
     orderToJson,
     priceValid,
 } from "./utilities.ts";
@@ -756,7 +757,7 @@ export class ClobClient {
                 headers,
                 params: _params,
             });
-            next_cursor = response.next_cursor;
+            next_cursor = normalizeNextCursor(response.next_cursor, next_cursor);
             results = [...results, ...response.data];
         }
         return results;
@@ -1078,7 +1079,7 @@ export class ClobClient {
                 headers: requestHeaders,
                 params: _params,
             });
-            next_cursor = response.next_cursor;
+            next_cursor = normalizeNextCursor(response.next_cursor, next_cursor);
             results = [...results, ...response.data];
         }
         return results;
@@ -1349,7 +1350,7 @@ export class ClobClient {
                 headers,
                 params,
             });
-            next_cursor = response.next_cursor;
+            next_cursor = normalizeNextCursor(response.next_cursor, next_cursor);
             results = [...results, ...response.data];
         }
         return results;
@@ -1419,7 +1420,7 @@ export class ClobClient {
                 headers,
                 params,
             });
-            next_cursor = response.next_cursor;
+            next_cursor = normalizeNextCursor(response.next_cursor, next_cursor);
             results = [...results, ...response.data];
         }
         return results;
@@ -1455,7 +1456,7 @@ export class ClobClient {
             const response = await this.get(`${this.host}${GET_REWARDS_MARKETS_CURRENT}`, {
                 params: { next_cursor },
             });
-            next_cursor = response.next_cursor;
+            next_cursor = normalizeNextCursor(response.next_cursor, next_cursor);
             results = [...results, ...response.data];
         }
         return results;
@@ -1468,7 +1469,7 @@ export class ClobClient {
             const response = await this.get(`${this.host}${GET_REWARDS_MARKETS}${conditionId}`, {
                 params: { next_cursor },
             });
-            next_cursor = response.next_cursor;
+            next_cursor = normalizeNextCursor(response.next_cursor, next_cursor);
             results = [...results, ...response.data];
         }
         return results;
