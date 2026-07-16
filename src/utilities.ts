@@ -1,3 +1,4 @@
+import { END_CURSOR } from "./constants.ts";
 import { ZERO_BYTES32 } from "./order-utils/exchange.order.const.ts";
 import type { SignedOrder } from "./order-utils/index.ts";
 import { SignatureType, Side as UtilsSide } from "./order-utils/index.ts";
@@ -5,6 +6,14 @@ import type { NewOrder, OrderBookSummary, TickSize } from "./types.ts";
 import { OrderType, Side } from "./types.ts";
 
 export const MIN_GTD_EXPIRATION_SECONDS = 3 * 60;
+
+export function normalizeNextCursor(value: unknown, currentCursor?: string): string {
+    const cursor = typeof value === "string" ? value.trim() : "";
+    if (!cursor || cursor === currentCursor) {
+        return END_CURSOR;
+    }
+    return cursor;
+}
 
 export function orderToJson<T extends OrderType>(
     order: SignedOrder,
