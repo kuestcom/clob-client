@@ -67,21 +67,21 @@
     },
     "dependencies": {
         "@kuestcom/builder-signing-sdk": "^2.0.2",
-        "axios": "1.16.1",
+        "axios": "1.18.1",
         "browser-or-node": "3.0.0",
-        "viem": "2.52.2"
+        "viem": "2.55.2"
     },
     "devDependencies": {
         "@biomejs/biome": "^2.4.15",
         "@ethersproject/wallet": "^5.8.0",
-        "@types/node": "^24.12.4",
+        "@types/node": "^26.1.1",
         "@types/ws": "^8.18.1",
         "@vitest/coverage-v8": "^4.1.8",
         "dotenv": "^17.4.2",
         "ethers": "^6.16.0",
         "husky": "^9.1.7",
         "lint-staged": "^17.0.2",
-        "typescript": "^6.0.3",
+        "typescript": "^7.0.2",
         "vitest": "^4.1.8",
         "ws": "^8.21.0"
     },
