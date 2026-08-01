@@ -69,7 +69,7 @@
         "@kuestcom/builder-signing-sdk": "^2.0.2",
         "axios": "1.18.1",
         "browser-or-node": "3.0.0",
-        "viem": "2.55.2"
+        "viem": "2.55.8"
     },
     "devDependencies": {
         "@biomejs/biome": "^2.4.15",
