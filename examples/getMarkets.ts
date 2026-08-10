@@ -1,23 +1,24 @@
-import { config as dotenvConfig } from "dotenv";
-import { resolve } from "path";
-import { Chain, ClobClient } from "../src/index.ts";
+import { config as dotenvConfig } from 'dotenv'
+import { resolve } from 'path'
 
-dotenvConfig({ path: resolve(import.meta.dirname, "../.env") });
+import { Chain, ClobClient } from '../src/index.ts'
+
+dotenvConfig({ path: resolve(import.meta.dirname, '../.env') })
 
 async function main() {
-    const host = process.env.CLOB_API_URL || "http://localhost:8080";
-    const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain;
-    const clobClient = new ClobClient(host, chainId);
+  const host = process.env.CLOB_API_URL || 'http://localhost:8080'
+  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain
+  const clobClient = new ClobClient(host, chainId)
 
-    console.log("market", await clobClient.getMarket("condition_id"));
+  console.log('market', await clobClient.getMarket('condition_id'))
 
-    console.log("markets", await clobClient.getMarkets());
+  console.log('markets', await clobClient.getMarkets())
 
-    console.log("simplified markets", await clobClient.getSimplifiedMarkets());
+  console.log('simplified markets', await clobClient.getSimplifiedMarkets())
 
-    console.log("sampling markets", await clobClient.getSamplingMarkets());
+  console.log('sampling markets', await clobClient.getSamplingMarkets())
 
-    console.log("sampling simplified markets", await clobClient.getSamplingSimplifiedMarkets());
+  console.log('sampling simplified markets', await clobClient.getSamplingSimplifiedMarkets())
 }
 
-main();
+void main()

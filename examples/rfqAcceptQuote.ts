@@ -1,46 +1,40 @@
-import { ethers } from "ethers";
-import { config as dotenvConfig } from "dotenv";
-import { resolve } from "path";
-import type { ApiKeyCreds } from "../src/index.ts";
-import { Chain, ClobClient, SignatureType } from "../src/index.ts";
+import { config as dotenvConfig } from 'dotenv'
+import { ethers } from 'ethers'
+import { resolve } from 'path'
 
-dotenvConfig({ path: resolve(import.meta.dirname, "../.env") });
+import type { ApiKeyCreds } from '../src/index.ts'
+
+import { Chain, ClobClient, SignatureType } from '../src/index.ts'
+
+dotenvConfig({ path: resolve(import.meta.dirname, '../.env') })
 
 async function main() {
-    const wallet = new ethers.Wallet(`${process.env.PK}`);
-    const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain;
-    const signerAddress = await wallet.getAddress();
-    console.log(`Address: ${signerAddress}, chainId: ${chainId}`);
+  const wallet = new ethers.Wallet(`${process.env.PK}`)
+  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain
+  const signerAddress = await wallet.getAddress()
+  console.log(`Address: ${signerAddress}, chainId: ${chainId}`)
 
-    const host = process.env.CLOB_API_URL || "http://localhost:8080";
-    const key = `${process.env.CLOB_API_KEY}`;
-    const creds: ApiKeyCreds = {
-        key,
-        secret: `${process.env.CLOB_SECRET}`,
-        passphrase: `${process.env.CLOB_PASS_PHRASE}`,
-    };
-    const depositWallet = process.env.DEPOSIT_WALLET || "";
-    const clobClient = new ClobClient(
-        host,
-        chainId,
-        wallet,
-        creds,
-        SignatureType.DEPOSIT_WALLET,
-        depositWallet,
-    );
+  const host = process.env.CLOB_API_URL || 'http://localhost:8080'
+  const key = `${process.env.CLOB_API_KEY}`
+  const creds: ApiKeyCreds = {
+    key,
+    secret: `${process.env.CLOB_SECRET}`,
+    passphrase: `${process.env.CLOB_PASS_PHRASE}`,
+  }
+  const depositWallet = process.env.DEPOSIT_WALLET || ''
+  const clobClient = new ClobClient(host, chainId, wallet, creds, SignatureType.DEPOSIT_WALLET, depositWallet)
 
-    console.log("Accepting quote...");
-    // accept the quote
-    const result = await clobClient.rfq.acceptRfqQuote({
-        requestId: "019a83a9-f4c7-7c96-9139-2da2b2d934ef",
-        quoteId: "019a83d7-0a92-730a-a686-f45acaad1c80",
-        expiration: Math.floor(Date.now() / 1000) + 3600, // 1 hour from now, refers to the order expiry, not quote expiry. For quote expiry, check the server RFQ config.
-    });
-    console.log(result);
-
+  console.log('Accepting quote...')
+  // accept the quote
+  const result = await clobClient.rfq.acceptRfqQuote({
+    requestId: '019a83a9-f4c7-7c96-9139-2da2b2d934ef',
+    quoteId: '019a83d7-0a92-730a-a686-f45acaad1c80',
+    expiration: Math.floor(Date.now() / 1000) + 3600, // 1 hour from now, refers to the order expiry, not quote expiry. For quote expiry, check the server RFQ config.
+  })
+  console.log(result)
 }
 
-main().catch(error => {
-    console.error("Error:", error);
-    process.exit(1);
-}); 
+main().catch((error) => {
+  console.error('Error:', error)
+  process.exit(1)
+})

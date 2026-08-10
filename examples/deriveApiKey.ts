@@ -1,22 +1,23 @@
-import { ethers } from "ethers";
-import { config as dotenvConfig } from "dotenv";
-import { resolve } from "path";
-import { Chain, ClobClient } from "../src/index.ts";
+import { config as dotenvConfig } from 'dotenv'
+import { ethers } from 'ethers'
+import { resolve } from 'path'
 
-dotenvConfig({ path: resolve(import.meta.dirname, "../.env") });
+import { Chain, ClobClient } from '../src/index.ts'
+
+dotenvConfig({ path: resolve(import.meta.dirname, '../.env') })
 
 async function main() {
-    const wallet = new ethers.Wallet(`${process.env.PK}`);
-    const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain;
-    console.log(`Address: ${await wallet.getAddress()}, chainId: ${chainId}`);
+  const wallet = new ethers.Wallet(`${process.env.PK}`)
+  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain
+  console.log(`Address: ${await wallet.getAddress()}, chainId: ${chainId}`)
 
-    const host = process.env.CLOB_API_URL || "http://localhost:8080";
-    const clobClient = new ClobClient(host, chainId, wallet);
+  const host = process.env.CLOB_API_URL || 'http://localhost:8080'
+  const clobClient = new ClobClient(host, chainId, wallet)
 
-    console.log(`Response: `);
-    const resp = await clobClient.deriveApiKey();
-    console.log(resp);
-    console.log(`Complete!`);
+  console.log(`Response: `)
+  const resp = await clobClient.deriveApiKey()
+  console.log(resp)
+  console.log(`Complete!`)
 }
 
-main();
+void main()

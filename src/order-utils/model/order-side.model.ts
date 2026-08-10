@@ -1,5 +1,5 @@
 export enum Side {
-    BUY = 0,
+  BUY = 0,
 
-    SELL = 1,
+  SELL = 1,
 }

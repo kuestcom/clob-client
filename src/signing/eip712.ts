@@ -1,7 +1,8 @@
-import type { ClobSigner } from "../signer.ts";
-import { getSignerAddress, signTypedDataWithSigner } from "../signer.ts";
-import type { Chain } from "../types.ts";
-import { MSG_TO_SIGN } from "./constants.ts";
+import type { ClobSigner } from '../signer.ts'
+import type { Chain } from '../types.ts'
+
+import { getSignerAddress, signTypedDataWithSigner } from '../signer.ts'
+import { MSG_TO_SIGN } from './constants.ts'
 
 /**
  * Builds the canonical Kuest CLOB EIP712 signature
@@ -10,40 +11,40 @@ import { MSG_TO_SIGN } from "./constants.ts";
  * @returns string
  */
 export const buildClobEip712Signature = async (
-    signer: ClobSigner,
-    chainId: Chain,
-    timestamp: number,
-    nonce: number,
+  signer: ClobSigner,
+  chainId: Chain,
+  timestamp: number,
+  nonce: number,
 ): Promise<string> => {
-    const address = await getSignerAddress(signer);
-    const ts = `${timestamp}`;
+  const address = await getSignerAddress(signer)
+  const ts = `${timestamp}`
 
-    const domain = {
-        name: "ClobAuthDomain",
-        version: "1",
-        chainId: chainId,
-    };
+  const domain = {
+    name: 'ClobAuthDomain',
+    version: '1',
+    chainId: chainId,
+  }
 
-    const types = {
-        ClobAuth: [
-            { name: "address", type: "address" },
-            { name: "timestamp", type: "string" },
-            { name: "nonce", type: "uint256" },
-            { name: "message", type: "string" },
-        ],
-    };
-    const value = {
-        address,
-        timestamp: ts,
-        nonce,
-        message: MSG_TO_SIGN,
-    };
-    const sig = await signTypedDataWithSigner({
-        signer,
-        domain,
-        types,
-        value,
-        primaryType: "ClobAuth",
-    });
-    return sig;
-};
+  const types = {
+    ClobAuth: [
+      { name: 'address', type: 'address' },
+      { name: 'timestamp', type: 'string' },
+      { name: 'nonce', type: 'uint256' },
+      { name: 'message', type: 'string' },
+    ],
+  }
+  const value = {
+    address,
+    timestamp: ts,
+    nonce,
+    message: MSG_TO_SIGN,
+  }
+  const sig = await signTypedDataWithSigner({
+    signer,
+    domain,
+    types,
+    value,
+    primaryType: 'ClobAuth',
+  })
+  return sig
+}
