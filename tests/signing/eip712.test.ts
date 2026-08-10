@@ -1,47 +1,49 @@
-import { buildClobEip712Signature } from "../../src/signing/eip712.ts";
-import { Chain } from "../../src/types.ts";
-import { Wallet } from "@ethersproject/wallet";
-import type { WalletClient } from "viem";
+import type { WalletClient } from 'viem'
 
-describe("eip712", () => {
-    let wallet: Wallet;
-    beforeEach(() => {
-        // publicly known private key
-        const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
-        wallet = new Wallet(privateKey);
-    });
+import { Wallet } from '@ethersproject/wallet'
 
-    it("buildClobEip712Signature", async () => {
-        const signature = await buildClobEip712Signature(wallet, Chain.AMOY, 10000000, 23);
-        expect(signature).not.null;
-        expect(signature).not.undefined;
-        expect(signature).not.empty;
-        expect(signature).equal(
-            // eslint-disable-next-line max-len
-            "0xf62319a987514da40e57e2f4d7529f7bac38f0355bd88bb5adbb3768d80de6c1682518e0af677d5260366425f4361e7b70c25ae232aff0ab2331e2b164a1aedc1b",
-        );
-    });
+import { buildClobEip712Signature } from '../../src/signing/eip712.ts'
+import { Chain } from '../../src/types.ts'
 
-    it("builds signature with a WalletClient signer and forwards primaryType", async () => {
-        const accountAddress = "0x00000000000000000000000000000000000000a1";
-        let receivedPrimaryType = "";
-        let receivedMessage: Record<string, unknown> | undefined;
-        const walletClientMock = {
-            account: { address: accountAddress },
-            signTypedData: async (args: { primaryType: string; message: Record<string, unknown> }) => {
-                receivedPrimaryType = args.primaryType;
-                receivedMessage = args.message;
-                return "0xdeadbeef";
-            },
-        } as unknown as WalletClient;
+describe('eip712', () => {
+  let wallet: Wallet
+  beforeEach(() => {
+    // publicly known private key
+    const privateKey = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
+    wallet = new Wallet(privateKey)
+  })
 
-        const signature = await buildClobEip712Signature(walletClientMock, Chain.AMOY, 10000000, 23);
+  it('buildClobEip712Signature', async () => {
+    const signature = await buildClobEip712Signature(wallet, Chain.AMOY, 10000000, 23)
+    expect(signature).not.null
+    expect(signature).not.undefined
+    expect(signature).not.empty
+    expect(signature).equal(
+      // eslint-disable-next-line max-len
+      '0xf62319a987514da40e57e2f4d7529f7bac38f0355bd88bb5adbb3768d80de6c1682518e0af677d5260366425f4361e7b70c25ae232aff0ab2331e2b164a1aedc1b',
+    )
+  })
 
-        expect(signature).to.equal("0xdeadbeef");
-        expect(receivedPrimaryType).to.equal("ClobAuth");
-        expect(receivedMessage).to.deep.include({
-            address: accountAddress,
-            timestamp: "10000000",
-        });
-    });
-});
+  it('builds signature with a WalletClient signer and forwards primaryType', async () => {
+    const accountAddress = '0x00000000000000000000000000000000000000a1'
+    let receivedPrimaryType = ''
+    let receivedMessage: Record<string, unknown> | undefined
+    const walletClientMock = {
+      account: { address: accountAddress },
+      signTypedData: async (args: { primaryType: string; message: Record<string, unknown> }) => {
+        receivedPrimaryType = args.primaryType
+        receivedMessage = args.message
+        return '0xdeadbeef'
+      },
+    } as unknown as WalletClient
+
+    const signature = await buildClobEip712Signature(walletClientMock, Chain.AMOY, 10000000, 23)
+
+    expect(signature).to.equal('0xdeadbeef')
+    expect(receivedPrimaryType).to.equal('ClobAuth')
+    expect(receivedMessage).to.deep.include({
+      address: accountAddress,
+      timestamp: '10000000',
+    })
+  })
+})

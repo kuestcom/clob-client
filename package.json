@@ -1,91 +1,87 @@
 {
-    "name": "@kuestcom/clob-client",
-    "description": "Typescript client for Kuest's CLOB",
-    "version": "6.0.10",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/kuestcom/clob-client.git"
+  "name": "@kuestcom/clob-client",
+  "version": "6.0.10",
+  "description": "Typescript client for Kuest's CLOB",
+  "keywords": [
+    "blockchain",
+    "ethereum"
+  ],
+  "homepage": "https://github.com/kuestcom/clob-client",
+  "bugs": {
+    "url": "https://github.com/kuestcom/clob-client/issues"
+  },
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Jonathan Amenechi",
+      "url": "https://github.com/JonathanAmenechi"
     },
-    "homepage": "https://github.com/kuestcom/clob-client",
-    "bugs": {
-        "url": "https://github.com/kuestcom/clob-client/issues"
+    {
+      "name": "Rodrigo Calvo",
+      "url": "https://github.com/poly-rodr"
     },
-    "contributors": [
-        {
-            "name": "Jonathan Amenechi",
-            "url": "https://github.com/JonathanAmenechi"
-        },
-        {
-            "name": "Rodrigo Calvo",
-            "url": "https://github.com/poly-rodr"
-        },
-        {
-            "name": "Matt Walker",
-            "url": "https://github.com/mttwlkr"
-        },
-        {
-            "name": "Liam Kovatch",
-            "url": "https://github.com/l-kov"
-        },
-        {
-            "name": "Mike Shrieve",
-            "url": "https://github.com/mshrieve"
-        },
-        {
-            "name": "Danny Dresner",
-            "url": "https://github.com/ddresner-pm"
-        },
-        {
-            "name": "Bruno Maciel",
-            "url": "https://github.com/ibruno"
-        }
-    ],
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "type": "module",
-    "files": [
-        "/dist"
-    ],
-    "sideEffects": false,
-    "keywords": [
-        "blockchain",
-        "ethereum"
-    ],
-    "engines": {
-        "node": ">=22.22.1"
+    {
+      "name": "Matt Walker",
+      "url": "https://github.com/mttwlkr"
     },
-    "license": "MIT",
-    "packageManager": "pnpm@11.1.3",
-    "scripts": {
-        "build": "rm -rf dist && tsc -p tsconfig.build.json",
-        "typecheck": "tsc -p tsconfig.test.json --noEmit",
-        "test": "pnpm typecheck && vitest run --coverage",
-        "lint": "biome check ./src",
-        "ci": "pnpm lint && pnpm test && pnpm build",
-        "deploy": "pnpm build && npm publish --access public --provenance",
-        "prepare": "husky"
+    {
+      "name": "Liam Kovatch",
+      "url": "https://github.com/l-kov"
     },
-    "dependencies": {
-        "@kuestcom/builder-signing-sdk": "^2.0.2",
-        "axios": "1.18.1",
-        "browser-or-node": "3.0.0",
-        "viem": "2.55.2"
+    {
+      "name": "Mike Shrieve",
+      "url": "https://github.com/mshrieve"
     },
-    "devDependencies": {
-        "@biomejs/biome": "^2.4.15",
-        "@ethersproject/wallet": "^5.8.0",
-        "@types/node": "^26.1.1",
-        "@types/ws": "^8.18.1",
-        "@vitest/coverage-v8": "^4.1.8",
-        "dotenv": "^17.4.2",
-        "ethers": "^6.16.0",
-        "husky": "^9.1.7",
-        "lint-staged": "^17.0.2",
-        "typescript": "^7.0.2",
-        "vitest": "^4.1.8",
-        "ws": "^8.21.0"
+    {
+      "name": "Danny Dresner",
+      "url": "https://github.com/ddresner-pm"
     },
-    "lint-staged": {
-        "*.{js,jsx,ts,tsx,json,jsonc,css,md,yml,yaml}": "biome check --no-errors-on-unmatched"
+    {
+      "name": "Bruno Maciel",
+      "url": "https://github.com/ibruno"
     }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuestcom/clob-client.git"
+  },
+  "files": [
+    "/dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.test.json --noEmit",
+    "test": "pnpm typecheck && vp test run --coverage",
+    "lint": "vp check",
+    "ci": "pnpm lint && pnpm test && pnpm build",
+    "deploy": "pnpm build && npm publish --access public --provenance",
+    "prepare": "vp config"
+  },
+  "dependencies": {
+    "@kuestcom/builder-signing-sdk": "^2.0.2",
+    "axios": "1.18.1",
+    "browser-or-node": "3.0.0",
+    "viem": "2.55.2"
+  },
+  "devDependencies": {
+    "@ethersproject/wallet": "^5.8.0",
+    "@types/node": "^26.1.1",
+    "@types/ws": "^8.18.1",
+    "@vitest/coverage-v8": "catalog:",
+    "dotenv": "^17.4.2",
+    "ethers": "^6.16.0",
+    "typescript": "^7.0.2",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:",
+    "ws": "^8.21.0"
+  },
+  "engines": {
+    "node": ">=22.22.1"
+  },
+  "packageManager": "pnpm@11.21.0"
 }

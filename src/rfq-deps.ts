@@ -1,59 +1,59 @@
-import type { RequestOptions } from "./http-helpers/index.ts";
-import type { SignedOrder } from "./order-utils/index.ts";
-import type { ClobSigner } from "./signer.ts";
+import type { RequestOptions } from './http-helpers/index.ts'
+import type { SignedOrder } from './order-utils/index.ts'
+import type { ClobSigner } from './signer.ts'
 import type {
-    AcceptQuoteParams,
-    ApiKeyCreds,
-    ApproveOrderParams,
-    CancelRfqQuoteParams,
-    CancelRfqRequestParams,
-    CreateOrderOptions,
-    GetRfqBestQuoteParams,
-    GetRfqQuotesParams,
-    GetRfqRequestsParams,
-    RfqQuote,
-    RfqQuoteResponse,
-    RfqQuotesResponse,
-    RfqRequestResponse,
-    RfqRequestsResponse,
-    RfqUserOrder,
-    RfqUserQuote,
-    TickSize,
-    UserOrder,
-} from "./types.ts";
+  AcceptQuoteParams,
+  ApiKeyCreds,
+  ApproveOrderParams,
+  CancelRfqQuoteParams,
+  CancelRfqRequestParams,
+  CreateOrderOptions,
+  GetRfqBestQuoteParams,
+  GetRfqQuotesParams,
+  GetRfqRequestsParams,
+  RfqQuote,
+  RfqQuoteResponse,
+  RfqQuotesResponse,
+  RfqRequestResponse,
+  RfqRequestsResponse,
+  RfqUserOrder,
+  RfqUserQuote,
+  TickSize,
+  UserOrder,
+} from './types.ts'
 
 /**
  * Minimal surface from the core CLOB client that RFQ functionality depends on.
  */
 export interface RfqDeps {
-    host: string;
+  host: string
 
-    signer?: ClobSigner;
+  signer?: ClobSigner
 
-    creds?: ApiKeyCreds;
+  creds?: ApiKeyCreds
 
-    useServerTime?: boolean;
+  useServerTime?: boolean
 
-    geoBlockToken?: string;
+  geoBlockToken?: string
 
-    /**
-     * Numeric user type (backed by SignatureType in the order builder).
-     */
-    userType: number;
+  /**
+   * Numeric user type (backed by SignatureType in the order builder).
+   */
+  userType: number
 
-    getServerTime(): Promise<number>;
+  getServerTime(): Promise<number>
 
-    getTickSize(tokenID: string): Promise<TickSize>;
+  getTickSize(tokenID: string): Promise<TickSize>
 
-    resolveTickSize(tokenID: string, tickSize?: TickSize): Promise<TickSize>;
+  resolveTickSize(tokenID: string, tickSize?: TickSize): Promise<TickSize>
 
-    createOrder(userOrder: UserOrder, options?: Partial<CreateOrderOptions>): Promise<SignedOrder>;
+  createOrder(userOrder: UserOrder, options?: Partial<CreateOrderOptions>): Promise<SignedOrder>
 
-    // HTTP methods that include geo_block_token injection
-    get(endpoint: string, options?: RequestOptions): Promise<any>;
-    post(endpoint: string, options?: RequestOptions): Promise<any>;
-    put(endpoint: string, options?: RequestOptions): Promise<any>;
-    del(endpoint: string, options?: RequestOptions): Promise<any>;
+  // HTTP methods that include geo_block_token injection
+  get(endpoint: string, options?: RequestOptions): Promise<any>
+  post(endpoint: string, options?: RequestOptions): Promise<any>
+  put(endpoint: string, options?: RequestOptions): Promise<any>
+  del(endpoint: string, options?: RequestOptions): Promise<any>
 }
 
 /**
@@ -62,31 +62,25 @@ export interface RfqDeps {
  * This is what `ClobClient.rfq` is typed as, and what `RfqClient` implements.
  */
 export interface IRfqClient {
-    createRfqRequest(
-        userOrder: RfqUserOrder,
-        options?: Partial<CreateOrderOptions>,
-    ): Promise<RfqRequestResponse>;
+  createRfqRequest(userOrder: RfqUserOrder, options?: Partial<CreateOrderOptions>): Promise<RfqRequestResponse>
 
-    cancelRfqRequest(request: CancelRfqRequestParams): Promise<"OK">;
+  cancelRfqRequest(request: CancelRfqRequestParams): Promise<'OK'>
 
-    getRfqRequests(params?: GetRfqRequestsParams): Promise<RfqRequestsResponse>;
+  getRfqRequests(params?: GetRfqRequestsParams): Promise<RfqRequestsResponse>
 
-    createRfqQuote(
-        userQuote: RfqUserQuote,
-        options?: Partial<CreateOrderOptions>,
-    ): Promise<RfqQuoteResponse>;
+  createRfqQuote(userQuote: RfqUserQuote, options?: Partial<CreateOrderOptions>): Promise<RfqQuoteResponse>
 
-    getRfqRequesterQuotes(params?: GetRfqQuotesParams): Promise<RfqQuotesResponse>;
+  getRfqRequesterQuotes(params?: GetRfqQuotesParams): Promise<RfqQuotesResponse>
 
-    getRfqQuoterQuotes(params?: GetRfqQuotesParams): Promise<RfqQuotesResponse>;
+  getRfqQuoterQuotes(params?: GetRfqQuotesParams): Promise<RfqQuotesResponse>
 
-    getRfqBestQuote(params?: GetRfqBestQuoteParams): Promise<RfqQuote>;
+  getRfqBestQuote(params?: GetRfqBestQuoteParams): Promise<RfqQuote>
 
-    cancelRfqQuote(quote: CancelRfqQuoteParams): Promise<"OK">;
+  cancelRfqQuote(quote: CancelRfqQuoteParams): Promise<'OK'>
 
-    rfqConfig(): Promise<any>;
+  rfqConfig(): Promise<any>
 
-    acceptRfqQuote(payload: AcceptQuoteParams): Promise<"OK">;
+  acceptRfqQuote(payload: AcceptQuoteParams): Promise<'OK'>
 
-    approveRfqOrder(payload: ApproveOrderParams): Promise<"OK">;
+  approveRfqOrder(payload: ApproveOrderParams): Promise<'OK'>
 }

@@ -1,6 +1,6 @@
 name: Bug report
 description: Report a reproducible bug in @kuestcom/clob-client
-title: "[Bug]: "
+title: '[Bug]: '
 labels:
   - bug
 body:
@@ -13,7 +13,7 @@ body:
     attributes:
       label: Package version
       description: The @kuestcom/clob-client version from package.json or package-lock.json.
-      placeholder: "@kuestcom/clob-client = \"6.0.2\""
+      placeholder: '@kuestcom/clob-client = "6.0.2"'
     validations:
       required: true
   - type: textarea
@@ -82,8 +82,8 @@ body:
       description: Did this work in an earlier SDK version?
       options:
         - Not sure
-        - "No"
-        - "Yes"
+        - 'No'
+        - 'Yes'
     validations:
       required: false
   - type: checkboxes

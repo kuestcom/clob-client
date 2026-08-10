@@ -3,7 +3,7 @@ name: GitHub Actions Security Analysis
 on:
   pull_request:
     paths:
-      - ".github/**"
+      - '.github/**'
 
 permissions:
   contents: read

@@ -1,6 +1,31 @@
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
-  - "@kuestcom/builder-signing-sdk@2.0.2"
+  - '@kuestcom/builder-signing-sdk@2.0.2'
+  - vite-plus
+  - '@voidzero-dev/*'
+  - oxlint
+  - '@oxlint/*'
+  - oxlint-tsgolint
+  - '@oxlint-tsgolint/*'
+  - oxfmt
+  - '@oxfmt/*'
+  - vitest
+  - '@vitest/*'
 shellEmulator: true
 allowBuilds:
   esbuild: true
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.7
+  vitest: 4.1.10
+  vite-plus: 0.2.7
+  '@vitest/coverage-v8': 4.1.10
+overrides:
+  vite: 'catalog:'
+  vitest: 'catalog:'
+peerDependencyRules:
+  allowAny:
+    - vite
+    - vitest
+  allowedVersions:
+    vite: '*'
+    vitest: '*'

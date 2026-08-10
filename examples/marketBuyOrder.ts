@@ -1,51 +1,52 @@
-import { ethers } from "ethers";
-import { config as dotenvConfig } from "dotenv";
-import { resolve } from "path";
-import { type ApiKeyCreds, Chain, ClobClient, OrderType, Side, SignatureType } from "../src/index.ts";
+import { config as dotenvConfig } from 'dotenv'
+import { ethers } from 'ethers'
+import { resolve } from 'path'
 
-dotenvConfig({ path: resolve(import.meta.dirname, "../.env") });
+import { type ApiKeyCreds, Chain, ClobClient, OrderType, Side, SignatureType } from '../src/index.ts'
+
+dotenvConfig({ path: resolve(import.meta.dirname, '../.env') })
 
 async function main() {
-    const wallet = new ethers.Wallet(`${process.env.PK}`);
-    const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain;
-    console.log(`Address: ${await wallet.getAddress()}, chainId: ${chainId}`);
+  const wallet = new ethers.Wallet(`${process.env.PK}`)
+  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain
+  console.log(`Address: ${await wallet.getAddress()}, chainId: ${chainId}`)
 
-    const host = process.env.CLOB_API_URL || "http://localhost:8080";
-    const creds: ApiKeyCreds = {
-        key: `${process.env.CLOB_API_KEY}`,
-        secret: `${process.env.CLOB_SECRET}`,
-        passphrase: `${process.env.CLOB_PASS_PHRASE}`,
-    };
-    const depositWallet = process.env.DEPOSIT_WALLET || "";
-    const clobClient = new ClobClient(host, chainId, wallet, creds, SignatureType.DEPOSIT_WALLET, depositWallet);
+  const host = process.env.CLOB_API_URL || 'http://localhost:8080'
+  const creds: ApiKeyCreds = {
+    key: `${process.env.CLOB_API_KEY}`,
+    secret: `${process.env.CLOB_SECRET}`,
+    passphrase: `${process.env.CLOB_PASS_PHRASE}`,
+  }
+  const depositWallet = process.env.DEPOSIT_WALLET || ''
+  const clobClient = new ClobClient(host, chainId, wallet, creds, SignatureType.DEPOSIT_WALLET, depositWallet)
 
-    const YES = "71321045679252212594626385532706912750332728571942532289631379312455583992563";
-    // Create a YES market buy order for the equivalent of 100 USDC for the market price
-    const marketBuyOrder = await clobClient.createMarketOrder({
-        tokenID: YES,
-        amount: 100, // $$$
-        side: Side.BUY,
-        orderType: OrderType.FOK, // or FAK
-    });
-    console.log("Created Market BUY Order", marketBuyOrder);
+  const YES = '71321045679252212594626385532706912750332728571942532289631379312455583992563'
+  // Create a YES market buy order for the equivalent of 100 USDC for the market price
+  const marketBuyOrder = await clobClient.createMarketOrder({
+    tokenID: YES,
+    amount: 100, // $$$
+    side: Side.BUY,
+    orderType: OrderType.FOK, // or FAK
+  })
+  console.log('Created Market BUY Order', marketBuyOrder)
 
-    // Send it to the server
-    console.log(await clobClient.postOrder(marketBuyOrder, OrderType.FOK)); // or FAK
+  // Send it to the server
+  console.log(await clobClient.postOrder(marketBuyOrder, OrderType.FOK)) // or FAK
 
-    // ------------------
+  // ------------------
 
-    // Create the order and send it to the server in a single step
-    const resp2 = await clobClient.createAndPostMarketOrder(
-        {
-            tokenID: YES,
-            amount: 100, // $$$
-            side: Side.BUY,
-            orderType: OrderType.FOK, // or FAK
-        },
-        { tickSize: "0.01" },
-        OrderType.FOK, // or FAK
-    );
-    console.log(resp2);
+  // Create the order and send it to the server in a single step
+  const resp2 = await clobClient.createAndPostMarketOrder(
+    {
+      tokenID: YES,
+      amount: 100, // $$$
+      side: Side.BUY,
+      orderType: OrderType.FOK, // or FAK
+    },
+    { tickSize: '0.01' },
+    OrderType.FOK, // or FAK
+  )
+  console.log(resp2)
 }
 
-main();
+void main()
