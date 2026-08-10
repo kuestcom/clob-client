@@ -188,3 +188,36 @@ export const adjustBuyAmountForFees = (
     }
     return adjusted;
 };
+
+/**
+ * Shrinks a market-buy USDC amount so principal plus Kuest's dynamic taker fee
+ * and the builder's flat taker fee fit within the available USDC balance.
+ * Kuest fees are charged on shares: shares * rate * [price * (1-price)]^exponent.
+ */
+export const adjustBuyAmountForDynamicFees = (
+    amount: number,
+    price: number,
+    userUSDCBalance: number,
+    rate: number,
+    exponent: number,
+    builderTakerFeeRateBps: number,
+): number => {
+    if (!(price > 0 && price < 1)) {
+        throw new Error(`price ${price} must be between 0 and 1 for dynamic fee calculation`);
+    }
+    const effectiveShareFeeRate = rate * Math.pow(price * (1 - price), exponent);
+    const platformCostRate = effectiveShareFeeRate / price;
+    const builderCostRate = builderTakerFeeRateBps / 10_000;
+    const totalCostRate = platformCostRate + builderCostRate;
+    const totalCost = amount * (1 + totalCostRate);
+    if (userUSDCBalance >= totalCost) {
+        return amount;
+    }
+    const adjusted = userUSDCBalance / (1 + totalCostRate);
+    if (!(adjusted > 0)) {
+        throw new Error(
+            `userUSDCBalance ${userUSDCBalance} too small to cover fees at price ${price}`,
+        );
+    }
+    return adjusted;
+};

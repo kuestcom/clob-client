@@ -146,7 +146,7 @@ import type {
 } from "./types.ts";
 import { OrderType, Side } from "./types.ts";
 import {
-    adjustBuyAmountForFees,
+    adjustBuyAmountForDynamicFees,
     builderCodeToBytes32,
     generateOrderBookSummaryHash,
     isTickSizeSmaller,
@@ -1002,11 +1002,12 @@ export class ClobClient {
             };
             const builderTakerFeeRateBps =
                 this.builderFeeRates[orderToSign.builderCode]?.taker ?? 0;
-            orderToSign.amount = adjustBuyAmountForFees(
+            orderToSign.amount = adjustBuyAmountForDynamicFees(
                 orderToSign.amount,
                 orderToSign.price ?? 0,
                 orderToSign.userUSDCBalance,
-                fees.takerRateBps,
+                fees.rate,
+                fees.exponent,
                 builderTakerFeeRateBps,
             );
         }

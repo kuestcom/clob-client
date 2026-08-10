@@ -2,7 +2,12 @@ import { describe, expect, it, vi } from "vitest";
 import { ZERO_BYTES32 } from "../src/order-utils/exchange.order.const.ts";
 import { Side as OrderSide, SignatureType } from "../src/order-utils/index.ts";
 import { OrderType } from "../src/types.ts";
-import { MIN_GTD_EXPIRATION_SECONDS, normalizeNextCursor, orderToJson } from "../src/utilities.ts";
+import {
+    adjustBuyAmountForDynamicFees,
+    MIN_GTD_EXPIRATION_SECONDS,
+    normalizeNextCursor,
+    orderToJson,
+} from "../src/utilities.ts";
 
 const signedOrder = {
     salt: "1",
@@ -106,5 +111,36 @@ describe("normalizeNextCursor", () => {
 
     it("preserves a new non-empty cursor", () => {
         expect(normalizeNextCursor("MTAw", "MA==")).to.equal("MTAw");
+    });
+});
+
+describe("dynamic taker fee sizing", () => {
+    it.each([
+        ["crypto", 0.07],
+        ["sports", 0.05],
+        ["finance", 0.04],
+        ["general", 0.05],
+        ["geopolitics", 0],
+    ])("keeps principal plus %s fees within the balance", (_category, rate) => {
+        const balance = 100;
+        const price = 0.5;
+        const builderFeeBps = 100;
+        const adjusted = adjustBuyAmountForDynamicFees(
+            balance,
+            price,
+            balance,
+            rate,
+            1,
+            builderFeeBps,
+        );
+        const shares = adjusted / price;
+        const kuestFee = shares * rate * price * (1 - price);
+        const builderFee = adjusted * (builderFeeBps / 10_000);
+
+        expect(adjusted + kuestFee + builderFee).toBeCloseTo(balance, 10);
+    });
+
+    it("does not shrink an amount when the balance already covers dynamic fees", () => {
+        expect(adjustBuyAmountForDynamicFees(100, 0.5, 104.5, 0.07, 1, 100)).toBe(100);
     });
 });
