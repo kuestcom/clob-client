@@ -1,5 +1,5 @@
 import type { SignedOrder } from './order-utils/index.ts'
-import type { NewOrder, OrderBookSummary, TickSize } from './types.ts'
+import type { BuilderFeeRate, NewOrder, OrderBookSummary, TickSize } from './types.ts'
 
 import { END_CURSOR } from './constants.ts'
 import { ZERO_BYTES32 } from './order-utils/exchange.order.const.ts'
@@ -163,14 +163,78 @@ export const builderCodeToBytes32 = (builderCode?: string): string => {
   throw new Error('builderCode must be an address or bytes32 hex string')
 }
 
+export interface DynamicFeeBreakdown {
+  kuestFeeBase: number
+  kuestFee: number
+  operatorFee: number
+  totalFee: number
+}
+
+export const parseBuilderFeeRateResponse = (value: unknown): BuilderFeeRate => {
+  const response = value && typeof value === 'object' ? (value as Record<string, unknown>) : {}
+  const makerFlat = Number(response.builder_maker_flat_fee_bps ?? 0)
+  const takerShare = Number(response.builder_taker_fee_share_bps ?? 3_000)
+  if (!Number.isInteger(makerFlat) || makerFlat < 0) {
+    throw new Error('builder_maker_flat_fee_bps must be a non-negative integer')
+  }
+  if (!Number.isInteger(takerShare) || takerShare < 0 || takerShare >= 10_000) {
+    throw new Error('builder_taker_fee_share_bps must be an integer between 0 and 9999')
+  }
+  return { makerFlat, takerShare }
+}
+
+const FEE_PRECISION = 100_000
+const USDC_PRECISION = 1_000_000
+
+/**
+ * Mirrors the CLOB/Exchange fee arithmetic for a single fill.
+ * The Kuest base is half-up rounded to five decimals, the gross total is rounded
+ * upward to five decimals, and the on-chain operator split floors to USDC units.
+ */
+export const calculateDynamicFeeBreakdown = (
+  shares: number,
+  price: number,
+  rate: number,
+  exponent: number,
+  builderTakerFeeShareBps = 3_000,
+): DynamicFeeBreakdown => {
+  if (!(price > 0 && price < 1)) {
+    throw new Error(`price ${price} must be between 0 and 1 for dynamic fee calculation`)
+  }
+  if (!Number.isInteger(builderTakerFeeShareBps) || builderTakerFeeShareBps < 0 || builderTakerFeeShareBps >= 10_000) {
+    throw new Error('builderTakerFeeShareBps must be an integer between 0 and 9999')
+  }
+
+  const rawBase = shares * rate * (price * (1 - price)) ** exponent
+  const kuestFeeBase =
+    rawBase < 1 / FEE_PRECISION ? 0 : Math.floor(rawBase * FEE_PRECISION + 0.5 + Number.EPSILON) / FEE_PRECISION
+  if (kuestFeeBase === 0) {
+    return { kuestFeeBase: 0, kuestFee: 0, operatorFee: 0, totalFee: 0 }
+  }
+
+  const totalFee =
+    Math.ceil((kuestFeeBase * 10_000 * FEE_PRECISION) / (10_000 - builderTakerFeeShareBps) - Number.EPSILON) /
+    FEE_PRECISION
+  const totalMicroUsdc = Math.round(totalFee * USDC_PRECISION)
+  const operatorMicroUsdc = Math.floor((totalMicroUsdc * builderTakerFeeShareBps) / 10_000)
+
+  return {
+    kuestFeeBase,
+    kuestFee: (totalMicroUsdc - operatorMicroUsdc) / USDC_PRECISION,
+    operatorFee: operatorMicroUsdc / USDC_PRECISION,
+    totalFee: totalMicroUsdc / USDC_PRECISION,
+  }
+}
+
 export const adjustBuyAmountForFees = (
   amount: number,
   price: number,
   userUSDCBalance: number,
   kuestTakerFeeRateBps: number,
-  builderTakerFeeRateBps: number,
+  builderTakerFeeShareBps: number,
 ): number => {
-  const totalFeeRate = (kuestTakerFeeRateBps + builderTakerFeeRateBps) / 10_000
+  const operatorShare = Math.min(9_999, Math.max(0, builderTakerFeeShareBps)) / 10_000
+  const totalFeeRate = kuestTakerFeeRateBps / 10_000 / (1 - operatorShare)
   const totalCost = amount * (1 + totalFeeRate)
   if (userUSDCBalance >= totalCost) {
     return amount
@@ -184,7 +248,7 @@ export const adjustBuyAmountForFees = (
 
 /**
  * Shrinks a market-buy USDC amount so principal plus Kuest's dynamic taker fee
- * and the builder's flat taker fee fit within the available USDC balance.
+ * grossed up for the builder's taker share fit within the available USDC balance.
  * Kuest fees are charged on shares: shares * rate * [price * (1-price)]^exponent.
  */
 export const adjustBuyAmountForDynamicFees = (
@@ -193,22 +257,32 @@ export const adjustBuyAmountForDynamicFees = (
   userUSDCBalance: number,
   rate: number,
   exponent: number,
-  builderTakerFeeRateBps: number,
+  builderTakerFeeShareBps: number,
 ): number => {
   if (!(price > 0 && price < 1)) {
     throw new Error(`price ${price} must be between 0 and 1 for dynamic fee calculation`)
   }
-  const effectiveShareFeeRate = rate * Math.pow(price * (1 - price), exponent)
-  const platformCostRate = effectiveShareFeeRate / price
-  const builderCostRate = builderTakerFeeRateBps / 10_000
-  const totalCostRate = platformCostRate + builderCostRate
-  const totalCost = amount * (1 + totalCostRate)
-  if (userUSDCBalance >= totalCost) {
+  const feeForAmount = (principal: number) =>
+    calculateDynamicFeeBreakdown(principal / price, price, rate, exponent, builderTakerFeeShareBps).totalFee
+  if (userUSDCBalance >= amount + feeForAmount(amount)) {
     return amount
   }
-  const adjusted = userUSDCBalance / (1 + totalCostRate)
-  if (!(adjusted > 0)) {
+
+  let low = 0
+  let high = Math.floor(Math.min(amount, userUSDCBalance) * USDC_PRECISION)
+  let best = 0
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2)
+    const principal = mid / USDC_PRECISION
+    if (principal + feeForAmount(principal) <= userUSDCBalance + Number.EPSILON) {
+      best = mid
+      low = mid + 1
+    } else {
+      high = mid - 1
+    }
+  }
+  if (best === 0) {
     throw new Error(`userUSDCBalance ${userUSDCBalance} too small to cover fees at price ${price}`)
   }
-  return adjusted
+  return best / USDC_PRECISION
 }

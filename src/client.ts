@@ -141,6 +141,7 @@ import {
   isTickSizeSmaller,
   normalizeNextCursor,
   orderToJson,
+  parseBuilderFeeRateResponse,
   priceValid,
 } from './utilities.ts'
 
@@ -302,8 +303,8 @@ export class ClobClient {
     const minTickSize = result.mts ?? result.min_tick_size
     const negRisk = result.nr ?? result.neg_risk ?? false
     const fd = result.fd ?? {}
-    const makerRateBps = Number(fd.maker_fee_rate_bps ?? fd.builder_maker_fee_rate_bps ?? 0)
-    const takerRateBps = Number(fd.taker_fee_rate_bps ?? fd.builder_taker_fee_rate_bps ?? 0)
+    const makerRateBps = Number(fd.maker_fee_rate_bps ?? 0)
+    const takerRateBps = Number(fd.taker_fee_rate_bps ?? 0)
 
     for (const token of tokens) {
       const tokenID = token?.t ?? token?.token_id
@@ -328,10 +329,10 @@ export class ClobClient {
     return result
   }
 
-  public async getBuilderFeeRate(builderCode: string): Promise<{ maker: number; taker: number }> {
+  public async getBuilderFeeRate(builderCode: string): Promise<{ makerFlat: number; takerShare: number }> {
     const normalizedBuilderCode = builderCodeToBytes32(builderCode)
     await this.ensureBuilderFeeRateCached(normalizedBuilderCode)
-    return this.builderFeeRates[normalizedBuilderCode] ?? { maker: 0, taker: 0 }
+    return this.builderFeeRates[normalizedBuilderCode] ?? { makerFlat: 0, takerShare: 3_000 }
   }
 
   public async getOrderBook(tokenID: string): Promise<OrderBookSummary> {
@@ -970,14 +971,14 @@ export class ClobClient {
         rate: 0,
         exponent: 0,
       }
-      const builderTakerFeeRateBps = this.builderFeeRates[orderToSign.builderCode]?.taker ?? 0
+      const builderTakerFeeShareBps = this.builderFeeRates[orderToSign.builderCode]?.takerShare ?? 3_000
       orderToSign.amount = adjustBuyAmountForDynamicFees(
         orderToSign.amount,
         orderToSign.price ?? 0,
         orderToSign.userUSDCBalance,
         fees.rate,
         fees.exponent,
-        builderTakerFeeRateBps,
+        builderTakerFeeShareBps,
       )
     }
 
@@ -1568,18 +1569,12 @@ export class ClobClient {
 
   private async ensureBuilderFeeRateCached(builderCode?: string): Promise<void> {
     const normalizedBuilderCode = builderCodeToBytes32(builderCode)
-    if (normalizedBuilderCode === builderCodeToBytes32()) {
-      return
-    }
     if (normalizedBuilderCode in this.builderFeeRates) {
       return
     }
 
     const result = await this.get(`${this.host}${GET_BUILDER_FEES}${normalizedBuilderCode}`)
-    this.builderFeeRates[normalizedBuilderCode] = {
-      maker: Number(result.builder_maker_fee_rate_bps ?? 0),
-      taker: Number(result.builder_taker_fee_rate_bps ?? 0),
-    }
+    this.builderFeeRates[normalizedBuilderCode] = parseBuilderFeeRateResponse(result)
   }
 
   protected async _resolveTickSize(tokenID: string, tickSize?: TickSize): Promise<TickSize> {

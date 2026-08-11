@@ -228,8 +228,8 @@ export interface FeeInfos {
 }
 
 export interface BuilderFeeRate {
-  maker: number
-  taker: number
+  makerFlat: number
+  takerShare: number
 }
 
 export interface BuilderFeeRates {
@@ -250,8 +250,6 @@ export interface ClobFeeDetails {
   e?: number
   maker_fee_rate_bps?: number | string
   taker_fee_rate_bps?: number | string
-  builder_maker_fee_rate_bps?: number | string
-  builder_taker_fee_rate_bps?: number | string
 }
 
 export interface MarketDetails {

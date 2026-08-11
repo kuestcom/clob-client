@@ -92,6 +92,9 @@ export const getSiteOrderContext = (): {
 } => {
   const builderCode = SITE_CONFIG.builder_code.trim()
   const metadata = SITE_CONFIG.order_metadata.trim()
+  if (SITE_CONFIG.builder_mode && (!builderCode || builderCode === ZERO_BYTES32)) {
+    throw new Error('builder_mode requires a non-zero builder_code in .sdk/site-config.json')
+  }
   return {
     ...(builderCode ? { builderCode } : {}),
     ...(metadata && metadata !== ZERO_BYTES32 ? { metadata } : {}),

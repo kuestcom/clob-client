@@ -7,17 +7,17 @@ type ContractConfig = {
 }
 
 const AMOY_CONTRACTS: ContractConfig = {
-  exchange: '0xaCd95F4F42322c7bE215C170362EEc57Ef4E78c2',
+  exchange: '0xaa1b8dE834E16eC69C044F5300041673C968c9eF',
   negRiskAdapter: '0xd9416E904e1ab925ad72F03F6D6ce0Aa80fd2dC5',
-  negRiskExchange: '0x961d3230B3BBdb2592D20fa34dBD12Fa19240603',
+  negRiskExchange: '0xe7FA09cA716FDf498d74AFF618d32AFeacc310aB',
   collateral: '0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582',
   conditionalTokens: '0x4682048725865bf17067bd85fF518527A262A9C7',
 }
 
 const MATIC_CONTRACTS: ContractConfig = {
-  exchange: '0xaCd95F4F42322c7bE215C170362EEc57Ef4E78c2',
+  exchange: '0xaa1b8dE834E16eC69C044F5300041673C968c9eF',
   negRiskAdapter: '0xd9416E904e1ab925ad72F03F6D6ce0Aa80fd2dC5',
-  negRiskExchange: '0x961d3230B3BBdb2592D20fa34dBD12Fa19240603',
+  negRiskExchange: '0xe7FA09cA716FDf498d74AFF618d32AFeacc310aB',
   collateral: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359',
   conditionalTokens: '0x4682048725865bf17067bd85fF518527A262A9C7',
 }
