@@ -240,6 +240,7 @@ export type TokenConditionMap = Record<string, string>
 
 export interface ClobToken {
   t?: string
+  mirror_token_id?: string
   o?: string
   token_id?: string
   outcome?: string
@@ -254,6 +255,7 @@ export interface ClobFeeDetails {
 
 export interface MarketDetails {
   c?: string
+  mirror_condition_id?: string
   condition_id?: string
   t?: Array<ClobToken | null>
   tokens?: Array<ClobToken | null>
@@ -263,6 +265,30 @@ export interface MarketDetails {
   nr?: boolean
   neg_risk?: boolean
   fd?: ClobFeeDetails
+}
+
+export interface MarketToken {
+  token_id: string
+  mirror_token_id?: string
+  outcome?: string
+  price?: number | string
+  winner?: boolean
+}
+
+export interface MarketResponse {
+  condition_id: string
+  mirror_condition_id?: string
+  tokens?: Array<MarketToken | null>
+  [key: string]: any
+}
+
+export interface MarketByTokenResponse {
+  condition_id: string
+  mirror_condition_id?: string
+  primary_token_id: string
+  mirror_primary_token_id?: string
+  secondary_token_id: string
+  mirror_secondary_token_id?: string
 }
 
 export interface TradeParams {

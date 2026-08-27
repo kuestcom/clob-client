@@ -25,6 +25,7 @@ import type {
   L2KuestHeader,
   L2WithBuilderHeader,
   MarketDetails,
+  MarketByTokenResponse,
   MarketPrice,
   MarketReward,
   MarketTradeEvent,
@@ -86,6 +87,7 @@ import {
   GET_MARKET,
   GET_MARKET_TRADES_EVENTS,
   GET_MARKETS,
+  GET_MARKETS_BY_TOKEN,
   GET_MIDPOINT,
   GET_MIDPOINTS,
   GET_NEG_RISK,
@@ -290,6 +292,10 @@ export class ClobClient {
 
   public async getMarket(conditionID: string): Promise<any> {
     return this.get(`${this.host}${GET_MARKET}${conditionID}`)
+  }
+
+  public async getMarketByToken(tokenID: string): Promise<MarketByTokenResponse> {
+    return this.get(`${this.host}${GET_MARKETS_BY_TOKEN}${tokenID}`)
   }
 
   public async getClobMarketInfo(conditionID: string): Promise<MarketDetails> {

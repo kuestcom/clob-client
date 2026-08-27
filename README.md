@@ -41,6 +41,21 @@ const creds = new ClobClient(host, 80002, signer).createOrDeriveApiKey()
 })()
 ```
 
+## Market mirrors
+
+Market responses expose optional mirror identifiers. The presence of `mirror_condition_id`
+identifies a mirrored market; token-level mappings are available through
+`mirror_token_id`, `mirror_primary_token_id`, and `mirror_secondary_token_id`.
+
+```ts
+const market = await clobClient.getMarketByToken('<token-id>')
+
+if (market.mirror_condition_id) {
+  console.log('market mirror', market.mirror_condition_id)
+  console.log('primary token mirror', market.mirror_primary_token_id)
+}
+```
+
 See [examples](examples/) for more information
 
 ### Using viem WalletClient
