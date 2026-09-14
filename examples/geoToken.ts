@@ -8,7 +8,7 @@ dotenvConfig({ path: resolve(import.meta.dirname, '../.env') })
 
 async function main() {
   const wallet = new ethers.Wallet(`${process.env.PK}`)
-  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain
+  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.POLYGON}`) as Chain
   const geoBlockToken = process.env.GEO_BLOCK_TOKEN // the geo block token
   console.log(`Address: ${await wallet.getAddress()}, chainId: ${chainId}`)
 

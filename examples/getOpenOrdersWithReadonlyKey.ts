@@ -14,7 +14,7 @@ dotenvConfig({ path: resolve(__dirname, '../.env') })
 
 async function main() {
   const wallet = new ethers.Wallet(`${process.env.PK}`)
-  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain
+  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.POLYGON}`) as Chain
   const address = await wallet.getAddress()
   console.log(`Address: ${address}, chainId: ${chainId}`)
 

@@ -21,10 +21,10 @@ const depositWallet = '' // Deposit Wallet address that holds funds.
 const signer = new Wallet('') // This is your Private Key.
 
 // In general don't create a new API key, always derive or createOrDerive
-const creds = new ClobClient(host, 80002, signer).createOrDeriveApiKey()
+const creds = new ClobClient(host, 137, signer).createOrDeriveApiKey()
 
 ;(async () => {
-  const clobClient = new ClobClient(host, 80002, signer, await creds, SignatureType.DEPOSIT_WALLET, depositWallet)
+  const clobClient = new ClobClient(host, 137, signer, await creds, SignatureType.DEPOSIT_WALLET, depositWallet)
   const resp2 = await clobClient.createAndPostOrder(
     {
       tokenID: '', //Use https://docs.kuest.com/developers/gamma-markets-api/get-markets to grab a sample token
@@ -63,18 +63,18 @@ See [examples](examples/) for more information
 ```ts
 import { ClobClient } from '@kuestcom/clob-client'
 import { createWalletClient, http } from 'viem'
-import { polygonAmoy } from 'viem/chains'
+import { polygon } from 'viem/chains'
 import { privateKeyToAccount } from 'viem/accounts'
 
 const host = 'https://clob.kuest.com'
 const account = privateKeyToAccount('0x...')
 const walletClient = createWalletClient({
   account,
-  chain: polygonAmoy,
+  chain: polygon,
   transport: http(),
 })
 
-const clobClient = new ClobClient(host, 80002, walletClient)
+const clobClient = new ClobClient(host, 137, walletClient)
 ```
 
 ### Error Handling
@@ -86,7 +86,7 @@ import { ClobClient, ApiError, SignatureType } from '@kuestcom/clob-client'
 
 const clobClient = new ClobClient(
   host,
-  80002,
+  137,
   signer,
   await creds,
   SignatureType.DEPOSIT_WALLET,

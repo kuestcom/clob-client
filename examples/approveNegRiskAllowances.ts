@@ -44,11 +44,11 @@ export function getCtfContract(mainnetQ: boolean, wallet: ethers.Wallet): ethers
 async function main() {
   // --------------------------
   // SET MAINNET OR AMOY HERE
-  const isMainnet = false
+  const isMainnet = true
   // --------------------------
   const wallet = getWallet(isMainnet)
   const walletAddress = await wallet.getAddress()
-  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain
+  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.POLYGON}`) as Chain
   console.log(`Address: ${walletAddress}, chainId: ${chainId}`)
 
   const contractConfig = getContractConfig(chainId)

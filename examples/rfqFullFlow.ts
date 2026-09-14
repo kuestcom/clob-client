@@ -82,7 +82,7 @@ async function main() {
   const quoterWallet = new ethers.Wallet(`${process.env.QUOTER_PK}`)
   const quoterAddress = await quoterWallet.getAddress()
 
-  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`) as Chain
+  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.POLYGON}`) as Chain
   const host = process.env.CLOB_API_URL || 'http://localhost:8080'
 
   console.log('='.repeat(60))

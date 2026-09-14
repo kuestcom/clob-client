@@ -8,7 +8,7 @@ dotenvConfig({ path: resolve(import.meta.dirname, '../.env') })
 
 async function main() {
   const wallet = new ethers.Wallet(`${process.env.PK}`)
-  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.AMOY}`, 10) as Chain
+  const chainId = parseInt(`${process.env.CHAIN_ID || Chain.POLYGON}`, 10) as Chain
   console.log(`Address: ${await wallet.getAddress()}, chainId: ${chainId}`)
 
   const host = process.env.CLOB_API_URL || 'http://localhost:8080'

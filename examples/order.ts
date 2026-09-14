@@ -11,11 +11,11 @@ const funder = '' //This is your Deposit Wallet address that holds funds.
 const signer = new Wallet('') //This is your Private Key. If using email login export from https://reveal.magic.link/kuest otherwise export from your Web3 Application
 
 //In general don't create a new API key, always derive or createOrDerive
-const creds = new ClobClient(host, 80002, signer).createOrDeriveApiKey()
+const creds = new ClobClient(host, 137, signer).createOrDeriveApiKey()
 
 const signatureType = SignatureType.DEPOSIT_WALLET
 void (async () => {
-  const clobClient = new ClobClient(host, 80002, signer, await creds, signatureType, funder)
+  const clobClient = new ClobClient(host, 137, signer, await creds, signatureType, funder)
   const resp2 = await clobClient.createAndPostOrder(
     {
       tokenID: '', //Use https://docs.kuest.com/developers/gamma-markets-api/get-markets to grab a sample token
